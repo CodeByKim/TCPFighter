@@ -3,6 +3,7 @@
 
 Window::Window(HINSTANCE hInstance, int nCmdShow)
     : mhInstance(hInstance)
+    , mScreenSize{ SCREEN_WIDTH, SCREEN_HEIGHT }
 {
     if (!RegisterWindowClass())
     {
@@ -23,6 +24,22 @@ Window::~Window()
 {
     Util::GetInstance().PrintLog(L"Window : dtor()");
     timeEndPeriod(1);
+}
+
+void Window::SetScreenSize(int screenWidth, int screenHeight)
+{
+    mScreenSize.width = screenWidth;
+    mScreenSize.height = screenHeight;
+
+    RECT rectWindow = { 0, 0, screenWidth, screenHeight };
+    AdjustWindowRect(&rectWindow, WS_OVERLAPPEDWINDOW, FALSE);
+    SetWindowPos(mhWnd,
+        HWND_TOPMOST,
+        100,
+        100,
+        rectWindow.right - rectWindow.left,
+        rectWindow.bottom - rectWindow.top,
+        SWP_NOMOVE | SWP_NOZORDER);
 }
 
 bool Window::Create(int nCmdShow)

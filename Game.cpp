@@ -8,15 +8,15 @@
 #include "Sprite.h"
 
 Game::Game(HINSTANCE hInstance, int nCmdShow)
-	: NetworkClient(hInstance, nCmdShow)
-    , mScreenSize {SCREEN_WIDTH, SCREEN_HEIGHT}
+	: NetworkClient(hInstance, nCmdShow)    
 {    
     CreateGameComponents();
 }
 
 Game::~Game()
 {
-
+    mGameObjects.clear();
+    mComponents.clear();
 }
 
 void Game::FrameUpdate()
@@ -27,22 +27,6 @@ void Game::FrameUpdate()
     {
         mComponents[i]->Update(mGameObjects);        
     }
-}
-
-void Game::SetScreenSize(int screenWidth, int screenHeight)
-{
-    mScreenSize.width = screenWidth;
-    mScreenSize.height = screenHeight;
-
-    RECT rectWindow = { 0, 0, screenWidth, screenHeight };
-    AdjustWindowRect(&rectWindow, WS_OVERLAPPEDWINDOW, FALSE);
-    SetWindowPos(mhWnd,
-        HWND_TOPMOST,
-        100,
-        100,
-        rectWindow.right - rectWindow.left,
-        rectWindow.bottom - rectWindow.top,
-        SWP_NOMOVE | SWP_NOZORDER);
 }
 
 void Game::CreateGameComponents()

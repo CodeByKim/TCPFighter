@@ -8,12 +8,14 @@ public:
 	~Window();
 	
 	void Run();
+	void SetScreenSize(int screenWidth, int screenHeight);
 
 protected:
 	virtual void FrameUpdate() = 0;
 
 	HINSTANCE mhInstance;
 	HWND mhWnd;
+	ScreenSize mScreenSize;
 
 private:
 	bool RegisterWindowClass();
