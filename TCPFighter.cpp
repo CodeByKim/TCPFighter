@@ -11,7 +11,7 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
 {
     LoadAllSprites();
 
-    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map.bmp", 0, 0);
+    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map", 0, 0);
     mBackgroundSprite.reset(mapSprite);
 
     mRender = (RenderComponent*)GetComponent(eComponentType::Render);
@@ -36,7 +36,7 @@ void TCPFighter::LoadAllSprites()
     Position2D mapPivot = { 0, 0 };
     Position2D pivot = { 71, 90 };
 
-    Resources::GetInstance().LoadSprite(L"Map.bmp", mapPivot);
+    Resources::GetInstance().LoadSprite(L"Map", mapPivot);
 
     Resources::GetInstance().LoadSpriteAnimation(L"Stand_L", pivot);
     Resources::GetInstance().LoadSpriteAnimation(L"Stand_R", pivot);

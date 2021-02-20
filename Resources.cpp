@@ -17,8 +17,8 @@ void Resources::LoadSprite(std::wstring_view path, Position2D pivot)
 	}
 
 	std::filesystem::path basePath(L"./SpriteData");
-	std::filesystem::path filePath(path);
-	
+	std::filesystem::path filePath(std::wstring(path.data()).append(L".bmp"));
+
 	BmpImageData data;	
 	Resources::GetInstance().LoadBmpImage(&data, (basePath / filePath).c_str());
 	mSprites.insert(std::make_pair(path, data));
