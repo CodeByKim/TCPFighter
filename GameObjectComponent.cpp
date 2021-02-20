@@ -5,3 +5,8 @@ void GameObjectComponent::Update(std::vector<std::unique_ptr<GameObject>>& objec
 {
 	Util::GetInstance().PrintLog(L"Update GameObjectComponent...");
 }
+
+eComponentType GameObjectComponent::GetType()
+{
+	return eComponentType::GameObject;
+}

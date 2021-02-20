@@ -8,5 +8,6 @@ class GameObjectComponent : public BaseComponent
 {
 public:
 	void Update(std::vector<std::unique_ptr<GameObject>>& objects) override;
+	eComponentType GetType() override;
 };
 

@@ -31,3 +31,17 @@
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
+
+struct Position2D
+{
+	int x;
+	int y;
+};
+
+struct BmpImageData
+{
+	BYTE* image;
+	int width;
+	int height;
+	int pitch;
+};
