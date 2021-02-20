@@ -14,15 +14,20 @@
 #include <functional>
 #include <chrono>
 #include <queue>
+#include <filesystem>
 
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <Windows.h>
+#include <timeapi.h>
 
-#define SERVER_PORT 25000
 #define SERVER_IP "127.0.0.1"
+#define SERVER_PORT 25000
 #define BUFFER_SIZE 1024
 #define RING_BUFFER_SIZE 10000
-#define WINDOWCLASS_NAME L"TCPFighter"
 
+#define WINDOWCLASS_NAME L"TCPFighter"
 #define UM_SOCKET (WM_USER + 1)
+
+#define SCREEN_WIDTH 640
+#define SCREEN_HEIGHT 480

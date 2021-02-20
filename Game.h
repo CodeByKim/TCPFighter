@@ -2,6 +2,9 @@
 #include "CommonLibrary.h"
 #include "NetworkClient.h"
 
+class BaseComponent;
+class GameObject;
+
 class Game : public NetworkClient
 {
 public:
@@ -12,6 +15,10 @@ protected:
 	void FrameUpdate() override;
 
 private:
+	void SetScreenSize();
+	void CreateGameComponents();
 
+	std::vector<std::unique_ptr<GameObject>> mGameObjects;
+	std::vector<std::unique_ptr<BaseComponent>> mComponents;
 };
 

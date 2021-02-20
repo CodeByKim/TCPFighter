@@ -15,11 +15,14 @@ Window::Window(HINSTANCE hInstance, int nCmdShow)
         Util::GetInstance().ShowMessageBox(L"Create() Error");
         return;
     }
+
+    timeBeginPeriod(1);
 }
 
 Window::~Window()
 {
     Util::GetInstance().PrintLog(L"Window : dtor()");
+    timeEndPeriod(1);
 }
 
 bool Window::Create(int nCmdShow)

@@ -141,18 +141,28 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="CommonLibrary.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectComponent.h" />
     <ClInclude Include="NetworkClient.h" />
+    <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="ScreenMemoryBuffer.h" />
     <ClInclude Include="TCPFighter.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NetworkClient.cpp" />
+    <ClCompile Include="RenderComponent.cpp" />
+    <ClCompile Include="ScreenMemoryBuffer.cpp" />
     <ClCompile Include="TCPFighter.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Window.cpp" />

@@ -12,12 +12,12 @@ public:
 protected:
 	virtual void FrameUpdate() = 0;
 
+	HINSTANCE mhInstance;
+	HWND mhWnd;
+
 private:
 	bool RegisterWindowClass();
 	bool Create(int nCmdShow);
 
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
-
-	HINSTANCE mhInstance;
-	HWND mhWnd;
 };

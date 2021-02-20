@@ -1,5 +1,5 @@
 ﻿#include "CommonLibrary.h"
-#include "Game.h"
+#include "TCPFighter.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -7,7 +7,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ int       nCmdShow)
 {
 
-    Game app(hInstance, nCmdShow);
-    app.Run();   
+    TCPFighter game(hInstance, nCmdShow);
+    game.Run();
 }
 
