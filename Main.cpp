@@ -1,5 +1,5 @@
 ﻿#include "CommonLibrary.h"
-#include "Window.h"
+#include "Game.h"
 
 int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_opt_ HINSTANCE hPrevInstance,
@@ -7,7 +7,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ int       nCmdShow)
 {
 
-    Window app(hInstance, nCmdShow);
+    Game app(hInstance, nCmdShow);
     app.Run();   
 }
 

@@ -1,10 +1,6 @@
 #include "Window.h"
 #include "Util.h"
 
-HINSTANCE hInst;
-
-LRESULT CALLBACK    WndProc(HWND, UINT, WPARAM, LPARAM);
-
 Window::Window(HINSTANCE hInstance, int nCmdShow)
     : mhInstance(hInstance)
 {
@@ -45,10 +41,20 @@ bool Window::Create(int nCmdShow)
 void Window::Run()
 {
     MSG msg;
-    while (GetMessage(&msg, nullptr, 0, 0))
+    while (true)
     {
-        TranslateMessage(&msg);
-        DispatchMessage(&msg);
+        if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
+        {
+            if (msg.message == WM_QUIT)
+                break;
+
+            TranslateMessage(&msg);
+            DispatchMessage(&msg);
+        }
+        else
+        {
+            FrameUpdate();
+        }
     }
 }
 
@@ -59,7 +65,7 @@ bool Window::RegisterWindowClass()
     wcex.cbSize = sizeof(WNDCLASSEX);
 
     wcex.style = CS_HREDRAW | CS_VREDRAW;
-    wcex.lpfnWndProc = WndProc;
+    wcex.lpfnWndProc = Window::WndProc;
     wcex.cbClsExtra = 0;
     wcex.cbWndExtra = 0;
     wcex.hInstance = mhInstance;
@@ -73,7 +79,7 @@ bool Window::RegisterWindowClass()
     return RegisterClassExW(&wcex);
 }
 
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
