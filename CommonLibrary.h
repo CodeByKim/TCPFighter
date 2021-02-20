@@ -31,6 +31,7 @@
 
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
+#define COLOR_BIT 32
 
 struct Position2D
 {
@@ -44,4 +45,10 @@ struct BmpImageData
 	int width;
 	int height;
 	int pitch;
+};
+
+struct ScreenSize
+{
+	int width;
+	int height;
 };

@@ -9,7 +9,7 @@ class Sprite;
 class RenderComponent : public BaseComponent
 {
 public:
-	RenderComponent(HWND hWnd);
+	RenderComponent(HWND hWnd, ScreenSize screenSize);
 	~RenderComponent();
 
 	void DrawSprite(Sprite* sprite, Position2D pos);
@@ -18,14 +18,14 @@ public:
 	eComponentType GetType() override;
 
 private:
-	void CreateDibBuffer(int width, int height, int colorBit);
-	void ReleaseDibBuffer();
+	//void CreateDibBuffer(int width, int height, int colorBit);
+	//void ReleaseDibBuffer();
 
 	Graphics mGraphics;
-	BITMAPINFO mDibInfo;
-	HWND mhWnd;
-	HDC mDC;
+	//BITMAPINFO mDibInfo;
+	//HWND mhWnd;
+	//HDC mDC;
 
-	ScreenMemoryBuffer mScreenBuffer;
+	//ScreenMemoryBuffer mScreenBuffer;
 };
 

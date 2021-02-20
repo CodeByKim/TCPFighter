@@ -9,8 +9,8 @@
 
 Game::Game(HINSTANCE hInstance, int nCmdShow)
 	: NetworkClient(hInstance, nCmdShow)
-{
-    SetScreenSize();
+    , mScreenSize {SCREEN_WIDTH, SCREEN_HEIGHT}
+{    
     CreateGameComponents();
 }
 
@@ -29,9 +29,12 @@ void Game::FrameUpdate()
     }
 }
 
-void Game::SetScreenSize()
+void Game::SetScreenSize(int screenWidth, int screenHeight)
 {
-    RECT rectWindow = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
+    mScreenSize.width = screenWidth;
+    mScreenSize.height = screenHeight;
+
+    RECT rectWindow = { 0, 0, screenWidth, screenHeight };
     AdjustWindowRect(&rectWindow, WS_OVERLAPPEDWINDOW, FALSE);
     SetWindowPos(mhWnd,
         HWND_TOPMOST,
@@ -46,7 +49,7 @@ void Game::CreateGameComponents()
 {
     mComponents.clear();
     mComponents.push_back(std::make_unique<GameObjectComponent>());
-    mComponents.push_back(std::make_unique<RenderComponent>(mhWnd));
+    mComponents.push_back(std::make_unique<RenderComponent>(mhWnd, mScreenSize));
 }
 
 BaseComponent* Game::GetComponent(eComponentType type)

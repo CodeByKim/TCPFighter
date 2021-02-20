@@ -7,12 +7,19 @@ class Sprite;
 class Graphics
 {
 public:
-	Graphics(ScreenMemoryBuffer& screenBuffer);
+	Graphics(HWND hWnd, ScreenSize screenSize);
 	~Graphics();
 
 	void Draw(Sprite* sprite, Position2D position);
+	void Render();
 
-private:
-	ScreenMemoryBuffer& mScreenBuffer;
+private:	
+	void CreateDibBuffer(int width, int height, int colorBit);
+	void ReleaseDibBuffer();
+
+	BITMAPINFO mDibInfo;
+	ScreenMemoryBuffer mScreenBuffer;
+	HWND mhWnd;
+	HDC mDC;
 };
 

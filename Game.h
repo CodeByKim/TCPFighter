@@ -13,16 +13,16 @@ public:
 	~Game();
 
 	BaseComponent* GetComponent(eComponentType type);
+	void SetScreenSize(int screenWidth, int screenHeight);
 
 protected:
 	void FrameUpdate() override;
 
-private:
-	void SetScreenSize();
-	void CreateGameComponents();
-	
+private:	
+	void CreateGameComponents();	
 
 	std::vector<std::unique_ptr<GameObject>> mGameObjects;
 	std::vector<std::unique_ptr<BaseComponent>> mComponents;
+	ScreenSize mScreenSize;
 };
 

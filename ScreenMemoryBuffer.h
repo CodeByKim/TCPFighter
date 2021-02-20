@@ -2,12 +2,6 @@
 
 #include "CommonLibrary.h"
 
-struct ScreenSize
-{
-	int width;
-	int height;
-};
-
 struct ScreenMemoryBuffer
 {
 	ScreenSize screenSize;

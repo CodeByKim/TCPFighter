@@ -9,6 +9,7 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
 	: Game(hInstance, nCmdShow)
     , mBackgroundSprite(nullptr)
 {
+    SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     LoadAllSprites();
 
     Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map", 0, 0);
