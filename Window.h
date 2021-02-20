@@ -4,12 +4,16 @@
 class Window
 {
 public:
-	Window();
+	Window(HINSTANCE hInstance, int nCmdShow);
 	~Window();
-
-	bool Create();
+	
 	void Run();
-private:
 
+private:
+	bool RegisterWindowClass();
+	bool Create(int nCmdShow);
+
+	HINSTANCE mhInstance;
+	HWND mhWnd;
 };
 
