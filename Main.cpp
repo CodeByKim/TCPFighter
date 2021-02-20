@@ -1,4 +1,5 @@
 ﻿#include "CommonLibrary.h"
+#include "Window.h"
 
 HINSTANCE hInst;
 
@@ -11,6 +12,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                      _In_ LPWSTR    lpCmdLine,
                      _In_ int       nCmdShow)
 {
+
+    Window app;
+    if (app.Create())
+    {
+        app.Run();
+    }
+
     MyRegisterClass(hInstance);
     
     if (!InitInstance (hInstance, nCmdShow))

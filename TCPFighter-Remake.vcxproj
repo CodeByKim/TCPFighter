@@ -142,10 +142,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CommonLibrary.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="NetworkClient.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="TCPFighter.h" />
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="NetworkClient.cpp" />
+    <ClCompile Include="TCPFighter.cpp" />
+    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TCPFighter-Remake.rc" />
