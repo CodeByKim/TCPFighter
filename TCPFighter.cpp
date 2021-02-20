@@ -11,7 +11,7 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
 {
     LoadAllSprites();
 
-    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map", 0, 0);
+    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map.bmp", 0, 0);
     mBackgroundSprite.reset(mapSprite);
 
     mRender = (RenderComponent*)GetComponent(eComponentType::Render);
@@ -24,7 +24,7 @@ TCPFighter::~TCPFighter()
 
 void TCPFighter::FrameUpdate()
 {
-    mRender->DrawSprite(mBackgroundSprite.get(), 0, 0);
+    mRender->DrawSprite(mBackgroundSprite.get(), Position2D{ 0,0 });
 
     Game::FrameUpdate();
 

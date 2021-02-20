@@ -23,7 +23,7 @@ void Game::FrameUpdate()
 {
 	Util::GetInstance().PrintLog(L"Game FrameUpdate...");
 
-    for (int i = 0; i < mComponents.size(); i++)
+    for (size_t i = 0; i < mComponents.size(); i++)
     {
         mComponents[i]->Update(mGameObjects);        
     }
@@ -46,7 +46,7 @@ void Game::CreateGameComponents()
 {
     mComponents.clear();
     mComponents.push_back(std::make_unique<GameObjectComponent>());
-    mComponents.push_back(std::make_unique<RenderComponent>());
+    mComponents.push_back(std::make_unique<RenderComponent>(mhWnd));
 }
 
 BaseComponent* Game::GetComponent(eComponentType type)

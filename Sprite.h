@@ -10,6 +10,8 @@ public:
 	Position2D& GetPivot();
 	void SetPivot(Position2D pivot);
 	void SetPivot(int x, int y);
+	BmpImageData			GetBmpImageData();
+	DWORD					GetColorKey();
 
 private:
 	BmpImageData mBmpImage;

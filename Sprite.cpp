@@ -27,3 +27,13 @@ void Sprite::SetPivot(int x, int y)
     mPivot.x = x;
     mPivot.y = y;
 }
+
+BmpImageData Sprite::GetBmpImageData()
+{
+    return mBmpImage;
+}
+
+DWORD Sprite::GetColorKey()
+{
+    return mColorKey;
+}

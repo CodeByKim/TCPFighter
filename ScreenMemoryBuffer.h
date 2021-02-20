@@ -2,14 +2,18 @@
 
 #include "CommonLibrary.h"
 
-class ScreenMemoryBuffer
+struct ScreenSize
 {
-public:
+	int width;
+	int height;
+};
 
-private:
-	BYTE* mMemoryBuffer;
-	int mSize;
-	int mPitch;
-	int mColorBit;
+struct ScreenMemoryBuffer
+{
+	ScreenSize screenSize;
+	BYTE* memoryBuffer;
+	int bufferSize;
+	int pitch;
+	int colorBit;	
 };
 
