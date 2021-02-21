@@ -14,13 +14,13 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
     SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     LoadAllSprites();
 
-    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map", 0, 0);
+    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map");
     mBackgroundSprite.reset(mapSprite);
 
     mRender = (RenderComponent*)GetComponent(eComponentType::Render);
     
     GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
-    auto player = std::make_shared<Player>(Position2D{ 10, 10 }, -1);
+    auto player = std::make_shared<Player>(Position2D{ 100, 100 }, -1);
     objectComponent->RegisterObject(player);
 }
 
@@ -44,9 +44,7 @@ void TCPFighter::LoadAllSprites()
     Position2D pivot = { 71, 90 };
 
     Resources::GetInstance().LoadSprite(L"Map", mapPivot);
-    //Å×½ºÆ®...
-    Resources::GetInstance().LoadSprite(L"Stand", pivot);
-
+    
     Resources::GetInstance().LoadSpriteAnimation(L"Stand_L", pivot);
     Resources::GetInstance().LoadSpriteAnimation(L"Stand_R", pivot);
 

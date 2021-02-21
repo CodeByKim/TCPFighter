@@ -10,10 +10,11 @@ public:
 	void LoadSprite(std::wstring_view path, Position2D pivot);
 	void LoadSpriteAnimation(std::wstring_view path, Position2D pivot);
 
-	Sprite* CreateSprite(std::wstring_view name, int x, int y);
-	SpriteAnimation* CreateSpriteAnimation(std::wstring_view name, int x, int y);
+	Sprite* CreateSprite(BmpImageData spriteData);
+	Sprite* CreateSprite(std::wstring_view name);
+	SpriteAnimation* CreateSpriteAnimation();
 
-	//std::vector<BmpImageData>* GetSpriteAnimation(std::wstring_view name);
+	std::vector<BmpImageData>& GetSpriteAnimationData(std::wstring_view name);
 
 	static Resources& GetInstance();
 

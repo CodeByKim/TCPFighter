@@ -3,7 +3,7 @@
 #include "GameObject.h"
 
 class Graphics;
-class Sprite;
+class SpriteAnimation;
 
 class Player : public GameObject
 {
@@ -15,6 +15,6 @@ public:
 	void OnRender(Graphics& graphics) override;
 
 private:
-	std::unique_ptr<Sprite> mPlayerSprite;
+	std::unique_ptr<SpriteAnimation> mAnimation;
 };
 

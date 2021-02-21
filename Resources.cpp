@@ -20,7 +20,7 @@ void Resources::LoadSprite(std::wstring_view path, Position2D pivot)
 	std::filesystem::path filePath(std::wstring(path.data()).append(L".bmp"));
 
 	BmpImageData data;	
-	Resources::GetInstance().LoadBmpImage(&data, (basePath / filePath).c_str());
+	LoadBmpImage(&data, (basePath / filePath).c_str());
 	mSprites.insert(std::make_pair(path, data));
 }
 
@@ -41,7 +41,7 @@ void Resources::LoadSpriteAnimation(std::wstring_view path, Position2D pivot)
 		BmpImageData data;
 		const wchar_t* spritePath = iter->path().c_str();
 
-		if (Resources::GetInstance().LoadBmpImage(&data, spritePath))
+		if (LoadBmpImage(&data, spritePath))
 		{
 			sprites->push_back(data);
 			++iter;
@@ -51,21 +51,26 @@ void Resources::LoadSpriteAnimation(std::wstring_view path, Position2D pivot)
 	mSpriteAnimations.insert(std::make_pair(path, sprites));
 }
 
-Sprite* Resources::CreateSprite(std::wstring_view name, int x, int y)
+Sprite* Resources::CreateSprite(std::wstring_view name)
 {
 	BmpImageData bmp = mSprites[name.data()];	
 	return new Sprite(bmp);
 }
 
-SpriteAnimation* Resources::CreateSpriteAnimation(std::wstring_view name, int x, int y)
+Sprite* Resources::CreateSprite(BmpImageData spriteData)
 {
-	return nullptr;
+	return new Sprite(spriteData);
 }
 
-//std::vector<BmpImageData>* Resources::GetSpriteAnimation(std::wstring_view name)
-//{
-//	return mSpriteAnimations[name.data()];
-//}
+SpriteAnimation* Resources::CreateSpriteAnimation()
+{
+	return new SpriteAnimation();
+}
+
+std::vector<BmpImageData>& Resources::GetSpriteAnimationData(std::wstring_view name)
+{
+	return *mSpriteAnimations[name.data()];
+}
 
 bool Resources::LoadBmpImage(BmpImageData* bmpImage, const wchar_t* fileName)
 {
