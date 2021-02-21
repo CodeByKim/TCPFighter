@@ -19,37 +19,19 @@ Player::~Player()
 
 void Player::MovePlayer(int dir)
 {
-	switch (dir)
-	{
-	case dfPACKET_MOVE_DIR_LL:
-		mPosition.x -= 3;
-		break;
-	case dfPACKET_MOVE_DIR_LU:
-		mPosition.x -= 3;
-		mPosition.y -= 2;
-		break;
-	case dfPACKET_MOVE_DIR_UU:
-		mPosition.y -= 2;
-		break;
-	case dfPACKET_MOVE_DIR_RU:
-		mPosition.x += 3;
-		mPosition.y -= 2;
-		break;
-	case dfPACKET_MOVE_DIR_RR:
-		mPosition.x += 3;
-		break;
-	case dfPACKET_MOVE_DIR_RD:
-		mPosition.x += 3;
-		mPosition.y += 2;
-		break;
-	case dfPACKET_MOVE_DIR_DD:
-		mPosition.y += 2;
-		break;
-	case dfPACKET_MOVE_DIR_LD:
-		mPosition.x -= 3;
-		mPosition.y += 2;
-		break;
-	}
+	Position2D offset[8] = {
+		{-3, 0},
+		{-3, -2},
+		{0, -2},
+		{3, -2},
+		{3, 0},
+		{3, 2},
+		{0, 2},
+		{-3, 2}
+	};
+
+	mPosition.x += offset[dir].x;
+	mPosition.y += offset[dir].y;
 }
 
 void Player::OnFrameUpdate()
