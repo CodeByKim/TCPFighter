@@ -2,6 +2,18 @@
 #include "Resources.h"
 #include "Sprite.h"
 
+SpriteAnimation::SpriteAnimation()
+    : mCurrentFrame(0)
+    , mCurrentAnimationIndex(0)
+{
+
+}
+
+SpriteAnimation::~SpriteAnimation()
+{
+
+}
+
 void SpriteAnimation::AddAnimation(std::wstring_view name, Position2D pivot, int delay)
 {
 	if (HasAnimation(name))
@@ -9,8 +21,8 @@ void SpriteAnimation::AddAnimation(std::wstring_view name, Position2D pivot, int
 		return;
 	}
 
-	SpriteAnimationInfo* info = new SpriteAnimationInfo;
-	info->currentFrame = 0;
+	SpriteAnimationInfo* info = new SpriteAnimationInfo;	
+    mCurrentAnimationIndex = 0;
 	info->delay = delay;
 
 	auto spriteAnimationData = Resources::GetInstance().GetSpriteAnimationData(name);
@@ -32,46 +44,38 @@ void SpriteAnimation::Play(std::wstring_view name)
     //우선.. Play함수는 프레임마다 실행되니까 상관은 없을거같은데.. 문제는 프레임스킵이다.
     if (mCurrentAnimation == nullptr)
     {
-        mCurrentAnimation = anim;
-        mCurrentAnimation->currentFrame = 0;
+        mCurrentAnimation = anim;        
+        mCurrentAnimationIndex = 0;
         mCurrentAnimation->currentSprite = mCurrentAnimation->animation[0];
     }
 
     if (mCurrentAnimation != anim)
     {
-        mCurrentAnimation = anim;
-        mCurrentAnimation->currentFrame = 0;
+        mCurrentAnimation = anim;        
+        mCurrentAnimationIndex = 0;
         mCurrentAnimation->currentSprite = mCurrentAnimation->animation[0];
     }
 
-    if (mCurrentAnimation->delay <= frame)
-    {
-        int currentFrame = mCurrentAnimation->currentFrame;
-        if (currentFrame >= mCurrentAnimation->animation.size())
+    if (mCurrentAnimation->delay <= mCurrentFrame)
+    {        
+        if (mCurrentAnimationIndex >= mCurrentAnimation->animation.size())
         {
-            ResetFrame();
+            mCurrentAnimationIndex = 0;
         }
-        else
-        {
-            NextFrame();
 
-        }
-        frame = 0;
+        NextFrame();
+        mCurrentFrame = 0;
     }
-
-    frame += 1;
+    else
+    {
+        mCurrentFrame += 1;
+    }    
 }
 
 void SpriteAnimation::NextFrame()
-{    
-    mCurrentAnimation->currentSprite = mCurrentAnimation->animation[mCurrentAnimation->currentFrame];
-    mCurrentAnimation->currentFrame += 1;
-}
-
-void SpriteAnimation::ResetFrame()
 {
-    mCurrentAnimation->currentSprite = mCurrentAnimation->animation[0];
-    mCurrentAnimation->currentFrame = 0;
+    mCurrentAnimation->currentSprite = mCurrentAnimation->animation[mCurrentAnimationIndex];
+    mCurrentAnimationIndex += 1;
 }
 
 Sprite* SpriteAnimation::GetCurrentSprite()

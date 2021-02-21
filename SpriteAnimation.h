@@ -5,9 +5,7 @@ class Sprite;
 
 struct SpriteAnimationInfo
 {
-	int delay;
-	int currentFrame;
-
+	int delay;	
 	std::vector<Sprite*> animation;
 	Sprite* currentSprite;
 };
@@ -15,6 +13,9 @@ struct SpriteAnimationInfo
 class SpriteAnimation
 {
 public:
+	SpriteAnimation();
+	~SpriteAnimation();
+
 	void AddAnimation(std::wstring_view name, Position2D pivot, int delay);
 	void Play(std::wstring_view name);
 	Sprite* GetCurrentSprite();
@@ -22,10 +23,10 @@ public:
 private:
 	bool HasAnimation(std::wstring_view name);
 	void NextFrame();
-	void ResetFrame();
 
 	std::unordered_map<std::wstring, SpriteAnimationInfo*> mAnimations;
 	SpriteAnimationInfo* mCurrentAnimation;
-	int frame = 0;
+	int mCurrentFrame;
+	int mCurrentAnimationIndex;
 };
 
