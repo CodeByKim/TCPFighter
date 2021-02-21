@@ -55,6 +55,7 @@ void TCPFighter::LoadAllSprites()
 void TCPFighter::RegisterInputHandlers()
 {
     InputComponent* inputComponent = (InputComponent*)GetComponent(eComponentType::Input);
+
     inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_LL, [this]() {        
         mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_LL);
         });

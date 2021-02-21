@@ -20,7 +20,12 @@ Player::~Player()
 }
 
 void Player::MovePlayer(int dir)
-{
+{	
+	if (mCurrentState == ePlayerState::Attack)
+	{
+		return;
+	}
+
 	Position2D offset[8] = {
 		{-3, 0},
 		{-3, -2},
@@ -54,41 +59,76 @@ void Player::MovePlayer(int dir)
 	mCurrentState = ePlayerState::Move;	
 }
 
+int attack;
 void Player::Attack(int attackType)
 {
 	mCurrentState = ePlayerState::Attack;
+	attack = attackType;
 }
 
 void Player::OnFrameUpdate()
 {	
-	if (mCurrentState == ePlayerState::Idle)
+	switch(mCurrentState)
 	{
-		if (mCurrentDir == ePlayerDirection::Left)
+		case ePlayerState::Idle:
 		{
-			mAnimation->Play(L"Stand_L");
+			if (mCurrentDir == ePlayerDirection::Left)
+			{
+				mAnimation->Play(L"Stand_L");				
+			}
+			else
+			{
+				mAnimation->Play(L"Stand_R");
+			}
 		}
-		else
-		{
-			mAnimation->Play(L"Stand_R");
-		}
-	}
-	else if(mCurrentState == ePlayerState::Move)
-	{
-		if (mCurrentDir == ePlayerDirection::Left)
-		{
-			mAnimation->Play(L"Move_L");
-		}
-		else
-		{
-			mAnimation->Play(L"Move_R");
-		}
-	}
-	else if (mCurrentState == ePlayerState::Attack)
-	{
-		mAnimation->Play(L"Attack3_R");
-	}
+		break;
 
-	mCurrentState = ePlayerState::Idle;
+		case ePlayerState::Move:
+		{
+			if (mCurrentDir == ePlayerDirection::Left)
+			{
+				mAnimation->Play(L"Move_L");				
+			}
+			else
+			{
+				mAnimation->Play(L"Move_R");				
+			}
+
+			mCurrentState = ePlayerState::Idle;
+		}
+		break;
+
+		case ePlayerState::Attack:
+		{
+			if (mCurrentDir == ePlayerDirection::Left)
+			{
+				if(attack == dfPACKET_ATTACK_1)
+					mAnimation->Play(L"Attack1_L");
+				else if (attack == dfPACKET_ATTACK_2)
+					mAnimation->Play(L"Attack2_L");
+				else
+					mAnimation->Play(L"Attack3_L");
+
+				mAnimation->mEndEventCallback = [this]() { 
+					mCurrentState = ePlayerState::Idle;
+				};
+			}
+			else
+			{
+				if (attack == dfPACKET_ATTACK_1)
+					mAnimation->Play(L"Attack1_R");
+				else if (attack == dfPACKET_ATTACK_2)
+					mAnimation->Play(L"Attack2_R");
+				else
+					mAnimation->Play(L"Attack3_R");
+
+				mAnimation->mEndEventCallback = [this]() {
+					mCurrentState = ePlayerState::Idle;
+				};
+			}
+		}
+		break;
+	}	
 }
 
 void Player::OnRender(Graphics& graphics)

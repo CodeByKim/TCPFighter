@@ -20,6 +20,10 @@ public:
 	void Play(std::wstring_view name);
 	Sprite* GetCurrentSprite();
 
+	//Å×½ºÆ®...
+	std::function<void()> mEndEventCallback = nullptr;
+
+
 private:
 	bool HasAnimation(std::wstring_view name);
 	void NextFrame();

@@ -15,7 +15,7 @@ enum class ePlayerState
 {
 	Idle,
 	Move,
-	Attack
+	Attack	
 };
 
 class Player : public GameObject

@@ -61,6 +61,12 @@ void SpriteAnimation::Play(std::wstring_view name)
         if (mCurrentAnimationIndex >= mCurrentAnimation->animation.size())
         {
             mCurrentAnimationIndex = 0;
+            //여기서 Attack 애니메이션이라면 Idle로 되돌아가야 함
+            if (mEndEventCallback != nullptr)
+            {
+                mEndEventCallback();
+                return;
+            }
         }
 
         NextFrame();
