@@ -4,6 +4,7 @@
 
 class TCPFighter;
 
+#pragma region Commands...
 class ICommand
 {
 public:
@@ -51,6 +52,7 @@ class Attack3Command : public ICommand
 public:
 	void Execute(TCPFighter& game) override;
 };
+#pragma endregion
 
 class InputComponent : public BaseComponent
 {
@@ -60,7 +62,7 @@ public:
 	void Update() override;
 	eComponentType GetType() override;
 
-private:
+private:	
 	void HandleMoveInput();
 	void HandleAttackInput();
 };

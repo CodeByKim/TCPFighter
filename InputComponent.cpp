@@ -2,6 +2,7 @@
 #include "Game.h"
 #include "Util.h"
 
+#pragma region Commands...
 void UpKeyCommand::Execute(TCPFighter& game)
 {
 	//game.MovePlayer(UP_KEY);
@@ -42,22 +43,12 @@ InputComponent::InputComponent(Game& game)
 {
 
 }
-
-bool left = false;
-bool up = false;
-bool right = false;
-bool down = false;
-
+#pragma endregion
 
 void InputComponent::Update()
 {	
 	HandleMoveInput();
 	HandleAttackInput();
-
-	left = false;
-	up = false;
-	right = false;
-	down = false;
 }
 
 eComponentType InputComponent::GetType()
@@ -67,71 +58,54 @@ eComponentType InputComponent::GetType()
 
 void InputComponent::HandleMoveInput()
 {
-	if (GetAsyncKeyState(VK_LEFT) & 0x8000)		
-	{				
-		left = true;
-	}	
-
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
-	{	
-		up = true;
-	}
-
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-	{		
-		right = true;
-	}
-
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-	{		
-		down = true;
-	}
-	
-
-
-
-
-	if (up && right)
-	{
-		Util::GetInstance().PrintLog(L"UR");
-		return;
-	}
-
-	if (down && right)
-	{
-		Util::GetInstance().PrintLog(L"DR");
-		return;
-	}
-
-	if (down && left)
-	{
-		Util::GetInstance().PrintLog(L"DL");
-		return;
-	}
-
-	if (up && left)
+	if ((GetAsyncKeyState(VK_LEFT) & 0x8000) 
+		&& (GetAsyncKeyState(VK_UP) & 0x8000))
 	{
 		Util::GetInstance().PrintLog(L"UL");
 		return;
 	}
 
-	if (left)
+	if ((GetAsyncKeyState(VK_LEFT) & 0x8000)
+		&& (GetAsyncKeyState(VK_DOWN) & 0x8000))
+	{
+		Util::GetInstance().PrintLog(L"DL");
+		return;
+	}
+
+	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		&& (GetAsyncKeyState(VK_UP) & 0x8000))
+	{
+		Util::GetInstance().PrintLog(L"UR");
+		return;
+	}
+
+	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000)
+		&& (GetAsyncKeyState(VK_DOWN) & 0x8000))
+	{
+		Util::GetInstance().PrintLog(L"DR");
+		return;
+	}
+
+
+	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
 	{
 		Util::GetInstance().PrintLog(L"LL");
 	}
-	if (up)
+
+	if (GetAsyncKeyState(VK_UP) & 0x8000)
 	{
 		Util::GetInstance().PrintLog(L"UU");
 	}
-	if (right)
+
+	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
 	{
 		Util::GetInstance().PrintLog(L"RR");
 	}
-	if (down)
+
+	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
 	{
 		Util::GetInstance().PrintLog(L"DD");
 	}
-	
 }
 
 void InputComponent::HandleAttackInput()
