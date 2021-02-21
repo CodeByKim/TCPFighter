@@ -3,7 +3,9 @@
 #include "Game.h"
 #include "Resources.h"
 #include "Sprite.h"
+#include "GameObjectComponent.h"
 #include "RenderComponent.h"
+#include "Player.h"
 
 TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
 	: Game(hInstance, nCmdShow)
@@ -16,6 +18,10 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
     mBackgroundSprite.reset(mapSprite);
 
     mRender = (RenderComponent*)GetComponent(eComponentType::Render);
+    
+    GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
+    auto player = std::make_shared<Player>(Position2D{ 10, 10 }, -1);
+    objectComponent->RegisterObject(player);
 }
 
 TCPFighter::~TCPFighter()
@@ -38,6 +44,8 @@ void TCPFighter::LoadAllSprites()
     Position2D pivot = { 71, 90 };
 
     Resources::GetInstance().LoadSprite(L"Map", mapPivot);
+    //Å×½ºÆ®...
+    Resources::GetInstance().LoadSprite(L"Stand", pivot);
 
     Resources::GetInstance().LoadSpriteAnimation(L"Stand_L", pivot);
     Resources::GetInstance().LoadSpriteAnimation(L"Stand_R", pivot);

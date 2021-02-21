@@ -1,9 +1,11 @@
 #include "RenderComponent.h"
 #include "Util.h"
 #include "GameObject.h"
+#include "Game.h"
 
-RenderComponent::RenderComponent(HWND hWnd, ScreenSize screenSize)
-	: mGraphics(hWnd, screenSize)
+RenderComponent::RenderComponent(Game& game, HWND hWnd, ScreenSize screenSize)
+	: BaseComponent(game)
+	, mGraphics(hWnd, screenSize)	
 {	
 	
 }
@@ -18,10 +20,11 @@ void RenderComponent::DrawSprite(Sprite* sprite, Position2D pos)
 	mGraphics.Draw(sprite, pos);
 }
 
-void RenderComponent::Update(std::vector<std::unique_ptr<GameObject>>& objects)
+void RenderComponent::Update()
 {
-	Util::GetInstance().PrintLog(L"Update RenderComponent...");
+	Util::GetInstance().PrintLog(L"Update RenderComponent...");	
 
+	auto objects = mGame.GetGameObjects();
 	for (size_t i = 0; i < objects.size(); i++)
 	{
 		objects[i]->OnRender(mGraphics);

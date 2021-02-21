@@ -14,8 +14,7 @@ Game::Game(HINSTANCE hInstance, int nCmdShow)
 }
 
 Game::~Game()
-{
-    mGameObjects.clear();
+{    
     mComponents.clear();
 }
 
@@ -25,15 +24,18 @@ void Game::FrameUpdate()
 
     for (size_t i = 0; i < mComponents.size(); i++)
     {
-        mComponents[i]->Update(mGameObjects);        
+        mComponents[i]->Update();        
     }
+
+    //임시로 프레임 맞춤
+    Sleep(20);
 }
 
 void Game::CreateGameComponents()
 {
     mComponents.clear();
-    mComponents.push_back(std::make_unique<GameObjectComponent>());
-    mComponents.push_back(std::make_unique<RenderComponent>(mhWnd, mScreenSize));
+    mComponents.push_back(std::make_unique<GameObjectComponent>(*this));
+    mComponents.push_back(std::make_unique<RenderComponent>(*this, mhWnd, mScreenSize));
 }
 
 BaseComponent* Game::GetComponent(eComponentType type)
@@ -47,4 +49,10 @@ BaseComponent* Game::GetComponent(eComponentType type)
     }
 
     return nullptr;
+}
+
+std::vector<std::shared_ptr<GameObject>>& Game::GetGameObjects()
+{
+    GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
+    return objectComponent->GetObjects();
 }

@@ -12,16 +12,15 @@ public:
 	Game(HINSTANCE hInstance, int nCmdShow);
 	~Game();
 
-	BaseComponent* GetComponent(eComponentType type);
-	//void SetScreenSize(int screenWidth, int screenHeight);
-
+	std::vector<std::shared_ptr<GameObject>>& GetGameObjects();
+	BaseComponent* GetComponent(eComponentType type);	
+	
 protected:
 	void FrameUpdate() override;
 
 private:	
 	void CreateGameComponents();	
-
-	std::vector<std::unique_ptr<GameObject>> mGameObjects;
+	
 	std::vector<std::unique_ptr<BaseComponent>> mComponents;	
 };
 
