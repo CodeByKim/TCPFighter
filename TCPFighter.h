@@ -12,13 +12,13 @@ public:
 	TCPFighter(HINSTANCE hInstance, int nCmdShow);
 	~TCPFighter();
 
-	void MovePlayer(int dir);
-
 protected:
 	void FrameUpdate() override;
 
 private:
 	void LoadAllSprites();
+	void RegisterInputHandlers();
+	void CreateGameObject();
 
 	std::unique_ptr<Sprite> mBackgroundSprite;
 	RenderComponent* mRender;

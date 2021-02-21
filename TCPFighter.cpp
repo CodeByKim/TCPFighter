@@ -3,6 +3,7 @@
 #include "Game.h"
 #include "Resources.h"
 #include "Sprite.h"
+#include "InputComponent.h"
 #include "GameObjectComponent.h"
 #include "RenderComponent.h"
 #include "Player.h"
@@ -12,18 +13,13 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
     , mBackgroundSprite(nullptr)
     , mMyPlayer(nullptr)
 {
-    SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    LoadAllSprites();
-
-    Position2D mapPivot = { 0, 0 };    
-    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map", mapPivot);
-    mBackgroundSprite.reset(mapSprite);
-
     mRender = (RenderComponent*)GetComponent(eComponentType::Render);
-    
-    GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
-    mMyPlayer = std::make_shared<Player>(Position2D{ 200, 200 }, -1);
-    objectComponent->RegisterObject(mMyPlayer);
+
+    SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    LoadAllSprites();
+    RegisterInputHandlers();
+    CreateGameObject();
 }
 
 TCPFighter::~TCPFighter()
@@ -54,4 +50,44 @@ void TCPFighter::LoadAllSprites()
     Resources::GetInstance().LoadSpriteAnimation(L"Attack2_R");
     Resources::GetInstance().LoadSpriteAnimation(L"Attack3_L");
     Resources::GetInstance().LoadSpriteAnimation(L"Attack3_R");
+}
+
+void TCPFighter::RegisterInputHandlers()
+{
+    InputComponent* inputComponent = (InputComponent*)GetComponent(eComponentType::Input);
+    inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_LL, [this]() {        
+        mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_LL);
+        });
+    inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_LU, [this]() {
+        mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_LU);
+        });
+    inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_UU, [this]() {
+        mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_UU);
+        });
+    inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_RU, [this]() {
+        mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_RU);
+        });
+    inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_RR, [this]() {
+        mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_RR);
+        });
+    inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_RD, [this]() {
+        mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_RD);
+        });
+    inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_DD, [this]() {
+        mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_DD);
+        });
+    inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_LD, [this]() {
+        mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_LD);
+        });
+}
+
+void TCPFighter::CreateGameObject()
+{
+    Position2D mapPivot = { 0, 0 };
+    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map", mapPivot);
+    mBackgroundSprite.reset(mapSprite);
+
+    GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
+    mMyPlayer = std::make_shared<Player>(Position2D{ 200, 200 }, -1);
+    objectComponent->RegisterObject(mMyPlayer);
 }

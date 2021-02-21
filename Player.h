@@ -11,6 +11,7 @@ public:
 	Player(Position2D position, int id);
 	~Player();
 
+	void MovePlayer(int dir);
 	void OnFrameUpdate() override;
 	void OnRender(Graphics& graphics) override;
 
