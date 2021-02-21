@@ -5,6 +5,19 @@
 class Graphics;
 class SpriteAnimation;
 
+enum class ePlayerDirection
+{
+	Left,
+	Right
+};
+
+enum class ePlayerState
+{
+	Idle,
+	Move,
+	Attack
+};
+
 class Player : public GameObject
 {
 public:
@@ -18,6 +31,8 @@ public:
 private:
 	void InitializeAnimation();
 
+	ePlayerDirection mCurrentDir;
+	ePlayerState mCurrentState;
 	std::unique_ptr<SpriteAnimation> mAnimation;
 };
 

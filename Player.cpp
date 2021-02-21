@@ -8,6 +8,8 @@
 Player::Player(Position2D position, int id)
 	: GameObject(position, id)
 	, mAnimation(nullptr)
+	, mCurrentDir(ePlayerDirection::Right)
+	, mCurrentState(ePlayerState::Idle)
 {	
 	InitializeAnimation();
 }
@@ -32,11 +34,52 @@ void Player::MovePlayer(int dir)
 
 	mPosition.x += offset[dir].x;
 	mPosition.y += offset[dir].y;
+
+	switch (mCurrentDir)
+	{
+	case ePlayerDirection::Left:
+		if (offset[dir].x > 0)
+		{			
+			mCurrentDir = ePlayerDirection::Right;						
+		}		
+		break;
+	case ePlayerDirection::Right:
+		if (offset[dir].x < 0)
+		{			
+			mCurrentDir = ePlayerDirection::Left;			
+		}		
+		break;
+	}	
+
+	mCurrentState = ePlayerState::Move;	
 }
 
 void Player::OnFrameUpdate()
 {	
-	mAnimation->Play(L"Move_R");	
+	if (mCurrentState == ePlayerState::Idle)
+	{
+		if (mCurrentDir == ePlayerDirection::Left)
+		{
+			mAnimation->Play(L"Stand_L");
+		}
+		else
+		{
+			mAnimation->Play(L"Stand_R");
+		}
+	}
+	else if(mCurrentState == ePlayerState::Move)
+	{
+		if (mCurrentDir == ePlayerDirection::Left)
+		{
+			mAnimation->Play(L"Move_L");
+		}
+		else
+		{
+			mAnimation->Play(L"Move_R");
+		}
+	}	
+
+	mCurrentState = ePlayerState::Idle;
 }
 
 void Player::OnRender(Graphics& graphics)
