@@ -20,7 +20,7 @@ Player::~Player()
 void Player::OnFrameUpdate()
 {	
 	mAnimation->Play(L"Move_R");
-	mPosition.x += 1;
+	//mPosition.x += 1;
 }
 
 void Player::OnRender(Graphics& graphics)

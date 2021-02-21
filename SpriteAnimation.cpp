@@ -69,7 +69,7 @@ void SpriteAnimation::Play(std::wstring_view name)
     else
     {
         mCurrentFrame += 1;
-    }    
+    }
 }
 
 void SpriteAnimation::NextFrame()

@@ -6,7 +6,8 @@ class Game;
 enum class eComponentType
 {
 	GameObject,
-	Render
+	Render,
+	Input
 };
 
 class GameObject;

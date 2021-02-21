@@ -2,6 +2,7 @@
 #include "NetworkClient.h"
 #include "Util.h"
 #include "BaseComponent.h"
+#include "InputComponent.h"
 #include "GameObjectComponent.h"
 #include "RenderComponent.h"
 #include "GameObject.h"
@@ -19,9 +20,7 @@ Game::~Game()
 }
 
 void Game::FrameUpdate()
-{
-	Util::GetInstance().PrintLog(L"Game FrameUpdate...");
-
+{	
     for (size_t i = 0; i < mComponents.size(); i++)
     {
         mComponents[i]->Update();        
@@ -34,6 +33,8 @@ void Game::FrameUpdate()
 void Game::CreateGameComponents()
 {
     mComponents.clear();
+
+    mComponents.push_back(std::make_unique<InputComponent>(*this));
     mComponents.push_back(std::make_unique<GameObjectComponent>(*this));
     mComponents.push_back(std::make_unique<RenderComponent>(*this, mhWnd, mScreenSize));
 }

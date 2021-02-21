@@ -21,9 +21,7 @@ void RenderComponent::DrawSprite(Sprite* sprite, Position2D pos)
 }
 
 void RenderComponent::Update()
-{
-	Util::GetInstance().PrintLog(L"Update RenderComponent...");	
-
+{	
 	auto objects = mGame.GetGameObjects();
 	for (size_t i = 0; i < objects.size(); i++)
 	{

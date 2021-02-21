@@ -10,6 +10,7 @@
 TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
 	: Game(hInstance, nCmdShow)
     , mBackgroundSprite(nullptr)
+    , mMyPlayer(nullptr)
 {
     SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     LoadAllSprites();
@@ -21,8 +22,8 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
     mRender = (RenderComponent*)GetComponent(eComponentType::Render);
     
     GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
-    auto player = std::make_shared<Player>(Position2D{ 200, 200 }, -1);
-    objectComponent->RegisterObject(player);
+    mMyPlayer = std::make_shared<Player>(Position2D{ 200, 200 }, -1);
+    objectComponent->RegisterObject(mMyPlayer);
 }
 
 TCPFighter::~TCPFighter()
@@ -34,9 +35,7 @@ void TCPFighter::FrameUpdate()
 {
     mRender->DrawSprite(mBackgroundSprite.get(), Position2D{ 0,0 });
 
-    Game::FrameUpdate();
-
-    Util::GetInstance().PrintLog(L"TCPFighter FrameUpdate...");
+    Game::FrameUpdate();    
 }
 
 void TCPFighter::LoadAllSprites()

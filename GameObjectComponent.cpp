@@ -9,9 +9,7 @@ GameObjectComponent::GameObjectComponent(Game& game)
 }
 
 void GameObjectComponent::Update()
-{
-	Util::GetInstance().PrintLog(L"Update GameObjectComponent...");
-
+{	
 	for (size_t i = 0; i < mGameObjects.size(); i++)
 	{
 		mGameObjects[i]->OnFrameUpdate();
