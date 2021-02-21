@@ -9,21 +9,7 @@ Player::Player(Position2D position, int id)
 	: GameObject(position, id)
 	, mAnimation(nullptr)
 {	
-	SpriteAnimation* animation = Resources::GetInstance().CreateSpriteAnimation();
-	mAnimation.reset(animation);
-
-	mAnimation->AddAnimation(L"Stand_L", 5);
-	mAnimation->AddAnimation(L"Stand_R", 5);
-
-	mAnimation->AddAnimation(L"Move_L", 4);
-	mAnimation->AddAnimation(L"Move_R", 4);
-	
-	mAnimation->AddAnimation(L"Attack1_L", 3);
-	mAnimation->AddAnimation(L"Attack1_R", 3);
-	mAnimation->AddAnimation(L"Attack2_L", 4);
-	mAnimation->AddAnimation(L"Attack2_R", 4);
-	mAnimation->AddAnimation(L"Attack3_L", 4);
-	mAnimation->AddAnimation(L"Attack3_R", 4);
+	InitializeAnimation();
 }
 
 Player::~Player()
@@ -40,4 +26,24 @@ void Player::OnFrameUpdate()
 void Player::OnRender(Graphics& graphics)
 {
 	graphics.Draw(mAnimation->GetCurrentSprite(), mPosition);
+}
+
+void Player::InitializeAnimation()
+{
+	Position2D pivot = { 71, 90 };
+	SpriteAnimation* animation = Resources::GetInstance().CreateSpriteAnimation();
+	mAnimation.reset(animation);
+
+	mAnimation->AddAnimation(L"Stand_L", pivot, 5);
+	mAnimation->AddAnimation(L"Stand_R", pivot, 5);
+
+	mAnimation->AddAnimation(L"Move_L", pivot, 4);
+	mAnimation->AddAnimation(L"Move_R", pivot, 4);
+
+	mAnimation->AddAnimation(L"Attack1_L", pivot, 3);
+	mAnimation->AddAnimation(L"Attack1_R", pivot, 3);
+	mAnimation->AddAnimation(L"Attack2_L", pivot, 4);
+	mAnimation->AddAnimation(L"Attack2_R", pivot, 4);
+	mAnimation->AddAnimation(L"Attack3_L", pivot, 4);
+	mAnimation->AddAnimation(L"Attack3_R", pivot, 4);
 }

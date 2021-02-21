@@ -7,11 +7,11 @@ class SpriteAnimation;
 class Resources
 {
 public:
-	void LoadSprite(std::wstring_view path, Position2D pivot);
-	void LoadSpriteAnimation(std::wstring_view path, Position2D pivot);
+	void LoadSprite(std::wstring_view path);
+	void LoadSpriteAnimation(std::wstring_view path);
 
-	Sprite* CreateSprite(BmpImageData spriteData);
-	Sprite* CreateSprite(std::wstring_view name);
+	Sprite* CreateSprite(BmpImageData spriteData, Position2D pivot);
+	Sprite* CreateSprite(std::wstring_view name, Position2D pivot);
 	SpriteAnimation* CreateSpriteAnimation();
 
 	std::vector<BmpImageData>& GetSpriteAnimationData(std::wstring_view name);

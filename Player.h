@@ -15,6 +15,8 @@ public:
 	void OnRender(Graphics& graphics) override;
 
 private:
+	void InitializeAnimation();
+
 	std::unique_ptr<SpriteAnimation> mAnimation;
 };
 

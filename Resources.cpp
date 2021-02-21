@@ -8,7 +8,7 @@ Resources& Resources::GetInstance()
 	return instance;
 }
 
-void Resources::LoadSprite(std::wstring_view path, Position2D pivot)
+void Resources::LoadSprite(std::wstring_view path)
 {
 	auto spriteIter = mSpriteAnimations.find(path.data());
 	if (spriteIter != mSpriteAnimations.end())
@@ -24,7 +24,7 @@ void Resources::LoadSprite(std::wstring_view path, Position2D pivot)
 	mSprites.insert(std::make_pair(path, data));
 }
 
-void Resources::LoadSpriteAnimation(std::wstring_view path, Position2D pivot)
+void Resources::LoadSpriteAnimation(std::wstring_view path)
 {
 	auto spriteIter = mSpriteAnimations.find(path.data());
 	if (spriteIter != mSpriteAnimations.end())
@@ -51,15 +51,20 @@ void Resources::LoadSpriteAnimation(std::wstring_view path, Position2D pivot)
 	mSpriteAnimations.insert(std::make_pair(path, sprites));
 }
 
-Sprite* Resources::CreateSprite(std::wstring_view name)
-{
-	BmpImageData bmp = mSprites[name.data()];	
-	return new Sprite(bmp);
+Sprite* Resources::CreateSprite(std::wstring_view name, Position2D pivot)
+{	
+	Sprite* sprite = new Sprite(mSprites[name.data()]);
+	sprite->SetPivot(pivot);
+
+	return sprite;
 }
 
-Sprite* Resources::CreateSprite(BmpImageData spriteData)
+Sprite* Resources::CreateSprite(BmpImageData spriteData, Position2D pivot)
 {
-	return new Sprite(spriteData);
+	Sprite* sprite = new Sprite(spriteData);
+	sprite->SetPivot(pivot);
+
+	return sprite;
 }
 
 SpriteAnimation* Resources::CreateSpriteAnimation()

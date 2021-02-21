@@ -15,7 +15,7 @@ struct SpriteAnimationInfo
 class SpriteAnimation
 {
 public:
-	void AddAnimation(std::wstring_view name, int delay);
+	void AddAnimation(std::wstring_view name, Position2D pivot, int delay);
 	void Play(std::wstring_view name);
 	Sprite* GetCurrentSprite();
 

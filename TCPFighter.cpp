@@ -14,13 +14,14 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
     SetScreenSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     LoadAllSprites();
 
-    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map");
+    Position2D mapPivot = { 0, 0 };    
+    Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map", mapPivot);
     mBackgroundSprite.reset(mapSprite);
 
     mRender = (RenderComponent*)GetComponent(eComponentType::Render);
     
     GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
-    auto player = std::make_shared<Player>(Position2D{ 100, 100 }, -1);
+    auto player = std::make_shared<Player>(Position2D{ 200, 200 }, -1);
     objectComponent->RegisterObject(player);
 }
 
@@ -39,22 +40,19 @@ void TCPFighter::FrameUpdate()
 }
 
 void TCPFighter::LoadAllSprites()
-{
-    Position2D mapPivot = { 0, 0 };
-    Position2D pivot = { 71, 90 };
-
-    Resources::GetInstance().LoadSprite(L"Map", mapPivot);
+{   
+    Resources::GetInstance().LoadSprite(L"Map");
     
-    Resources::GetInstance().LoadSpriteAnimation(L"Stand_L", pivot);
-    Resources::GetInstance().LoadSpriteAnimation(L"Stand_R", pivot);
+    Resources::GetInstance().LoadSpriteAnimation(L"Stand_L");
+    Resources::GetInstance().LoadSpriteAnimation(L"Stand_R");
 
-    Resources::GetInstance().LoadSpriteAnimation(L"Move_L", pivot);
-    Resources::GetInstance().LoadSpriteAnimation(L"Move_R", pivot);
+    Resources::GetInstance().LoadSpriteAnimation(L"Move_L");
+    Resources::GetInstance().LoadSpriteAnimation(L"Move_R");
 
-    Resources::GetInstance().LoadSpriteAnimation(L"Attack1_L", pivot);
-    Resources::GetInstance().LoadSpriteAnimation(L"Attack1_R", pivot);
-    Resources::GetInstance().LoadSpriteAnimation(L"Attack2_L", pivot);
-    Resources::GetInstance().LoadSpriteAnimation(L"Attack2_R", pivot);
-    Resources::GetInstance().LoadSpriteAnimation(L"Attack3_L", pivot);
-    Resources::GetInstance().LoadSpriteAnimation(L"Attack3_R", pivot);
+    Resources::GetInstance().LoadSpriteAnimation(L"Attack1_L");
+    Resources::GetInstance().LoadSpriteAnimation(L"Attack1_R");
+    Resources::GetInstance().LoadSpriteAnimation(L"Attack2_L");
+    Resources::GetInstance().LoadSpriteAnimation(L"Attack2_R");
+    Resources::GetInstance().LoadSpriteAnimation(L"Attack3_L");
+    Resources::GetInstance().LoadSpriteAnimation(L"Attack3_R");
 }
