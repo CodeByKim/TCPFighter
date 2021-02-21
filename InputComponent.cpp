@@ -129,18 +129,18 @@ void InputComponent::HandleMoveInput()
 
 void InputComponent::HandleAttackInput()
 {
-	if (GetAsyncKeyState('A') & 0x8000)
+	if (GetAsyncKeyState('Z') & 0x8000)
 	{
-		
+		mInputHandlers[dfPACKET_ATTACK_1]();
 	}
 
-	if (GetAsyncKeyState('S') & 0x8000)
+	if (GetAsyncKeyState('X') & 0x8000)
 	{
-		
+		mInputHandlers[dfPACKET_ATTACK_2]();
 	}
 
-	if (GetAsyncKeyState('D') & 0x8000)
+	if (GetAsyncKeyState('C') & 0x8000)
 	{
-		
+		mInputHandlers[dfPACKET_ATTACK_3]();
 	}
 }

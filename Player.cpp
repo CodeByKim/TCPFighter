@@ -54,6 +54,11 @@ void Player::MovePlayer(int dir)
 	mCurrentState = ePlayerState::Move;	
 }
 
+void Player::Attack(int attackType)
+{
+	mCurrentState = ePlayerState::Attack;
+}
+
 void Player::OnFrameUpdate()
 {	
 	if (mCurrentState == ePlayerState::Idle)
@@ -77,7 +82,11 @@ void Player::OnFrameUpdate()
 		{
 			mAnimation->Play(L"Move_R");
 		}
-	}	
+	}
+	else if (mCurrentState == ePlayerState::Attack)
+	{
+		mAnimation->Play(L"Attack3_R");
+	}
 
 	mCurrentState = ePlayerState::Idle;
 }

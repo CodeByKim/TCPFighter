@@ -61,3 +61,7 @@ struct ScreenSize
 #define dfPACKET_MOVE_DIR_RD 5
 #define dfPACKET_MOVE_DIR_DD 6
 #define dfPACKET_MOVE_DIR_LD 7
+
+#define dfPACKET_ATTACK_1 8
+#define dfPACKET_ATTACK_2 9
+#define dfPACKET_ATTACK_3 10

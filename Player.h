@@ -25,6 +25,8 @@ public:
 	~Player();
 
 	void MovePlayer(int dir);
+	void Attack(int attackType);
+
 	void OnFrameUpdate() override;
 	void OnRender(Graphics& graphics) override;
 

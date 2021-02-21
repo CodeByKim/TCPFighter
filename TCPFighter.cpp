@@ -79,6 +79,15 @@ void TCPFighter::RegisterInputHandlers()
     inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_LD, [this]() {
         mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_LD);
         });
+    inputComponent->RegisterInputHandler(dfPACKET_ATTACK_1, [this]() {
+        mMyPlayer->Attack(dfPACKET_ATTACK_1);
+        });
+    inputComponent->RegisterInputHandler(dfPACKET_ATTACK_2, [this]() {
+        mMyPlayer->Attack(dfPACKET_ATTACK_2);
+        });
+    inputComponent->RegisterInputHandler(dfPACKET_ATTACK_3, [this]() {
+        mMyPlayer->Attack(dfPACKET_ATTACK_3);
+        });
 }
 
 void TCPFighter::CreateGameObject()
