@@ -50,38 +50,6 @@ void TCPFighter::OnConnect()
     Util::GetInstance().PrintLog(L"On Connect...");
 }
 
-void SC_CREATE_MY_CHARACTER(Packet* packet)
-{   
-    PACKET_SC_CREATE_MY_CHARACTER data;
-    data.Deserialize(packet);
-    
-    wchar_t str[256];
-    wsprintf(str, L"%s : %d, %d, %d, %d, %d", 
-        L"dfPACKET_SC_CREATE_MY_CHARACTER", 
-        data.id, 
-        data.direction, 
-        data.x, 
-        data.y, 
-        data.hp);
-    Util::GetInstance().PrintLog(str);
-}
-
-void SC_CREATE_OTHER_CHARACTER(Packet* packet)
-{    
-    PACKET_SC_CREATE_OTHER_CHARACTER data;
-    data.Deserialize(packet);
-
-    wchar_t str[256];
-    wsprintf(str, L"%s : %d, %d, %d, %d, %d",
-        L"dfPACKET_SC_CREATE_OTHER_CHARACTER",
-        data.id,
-        data.direction,
-        data.x,
-        data.y,
-        data.hp);
-    Util::GetInstance().PrintLog(str);
-}
-
 void TCPFighter::OnReceive(Packet* packet)
 {
     switch (packet->header.protocol)
@@ -163,7 +131,44 @@ void TCPFighter::CreateGameObject()
     Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map", mapPivot);
     mBackgroundSprite.reset(mapSprite);
 
-    GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
+    /*GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
     mMyPlayer = std::make_shared<Player>(Position2D{ 200, 200 }, -1);
+    objectComponent->RegisterObject(mMyPlayer);*/
+}
+
+void TCPFighter::SC_CREATE_MY_CHARACTER(Packet* packet)
+{
+    PACKET_SC_CREATE_MY_CHARACTER data;
+    data.Deserialize(packet);
+
+    wchar_t str[256];
+    wsprintf(str, L"%s : %d, %d, %d, %d, %d",
+        L"dfPACKET_SC_CREATE_MY_CHARACTER",
+        data.id,
+        data.direction,
+        data.x,
+        data.y,
+        data.hp);
+    Util::GetInstance().PrintLog(str);
+
+    GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
+    mMyPlayer = std::make_shared<Player>(data.id, Position2D{ data.x, data.y }, data.direction, data.hp);
+
     objectComponent->RegisterObject(mMyPlayer);
+}
+
+void TCPFighter::SC_CREATE_OTHER_CHARACTER(Packet* packet)
+{
+    PACKET_SC_CREATE_OTHER_CHARACTER data;
+    data.Deserialize(packet);
+
+    wchar_t str[256];
+    wsprintf(str, L"%s : %d, %d, %d, %d, %d",
+        L"dfPACKET_SC_CREATE_OTHER_CHARACTER",
+        data.id,
+        data.direction,
+        data.x,
+        data.y,
+        data.hp);
+    Util::GetInstance().PrintLog(str);
 }

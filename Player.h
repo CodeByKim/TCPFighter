@@ -21,7 +21,7 @@ enum class ePlayerState
 class Player : public GameObject
 {
 public:
-	Player(Position2D position, int id);
+	Player(int id, Position2D position, char dir, int hp);
 	~Player();
 
 	void MovePlayer(int dir);
@@ -36,5 +36,6 @@ private:
 	ePlayerDirection mCurrentDir;
 	ePlayerState mCurrentState;
 	std::unique_ptr<SpriteAnimation> mAnimation;
+	int mHp;
 };
 

@@ -76,9 +76,7 @@ bool Connection::GetPacket(std::queue<std::shared_ptr<Packet>>* packetQueue)
 
 			std::shared_ptr<Packet> packet = std::make_shared<Packet>();
 			packet->header = header;
-			packet->SetMemoryStream(buffer + PACKET_HEADER_SIZE, header.size);
-			//packet->data = new char[header.size];
-			//CopyMemory(packet->data, buffer + PACKET_HEADER_SIZE, header.size);
+			packet->SetMemoryStream(buffer + PACKET_HEADER_SIZE, header.size);			
 			packetQueue->push(packet);
 		}
 		else

@@ -5,11 +5,12 @@
 #include "Resources.h"
 #include "Graphics.h"
 
-Player::Player(Position2D position, int id)
+Player::Player(int id, Position2D position, char dir, int hp)
 	: GameObject(position, id)
 	, mAnimation(nullptr)
-	, mCurrentDir(ePlayerDirection::Right)
+	, mCurrentDir(dir == dfPACKET_MOVE_DIR_LL ? ePlayerDirection::Left : ePlayerDirection::Right)
 	, mCurrentState(ePlayerState::Idle)
+	, mHp(hp)
 {	
 	InitializeAnimation();
 }

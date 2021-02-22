@@ -25,6 +25,9 @@ private:
 	void RegisterInputHandlers();
 	void CreateGameObject();
 
+	void SC_CREATE_MY_CHARACTER(Packet* packet);
+	void SC_CREATE_OTHER_CHARACTER(Packet* packet);
+
 	std::unique_ptr<Sprite> mBackgroundSprite;
 	RenderComponent* mRender;
 

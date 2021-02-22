@@ -8,8 +8,8 @@ Packet::Packet()
 
 Packet::~Packet()
 {
-	/*if (data != nullptr)
-		delete[] data;*/
+	if (stream != nullptr)
+		delete stream;
 }
 
 void Packet::SetMemoryStream(char* data, int size)
