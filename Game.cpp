@@ -57,7 +57,7 @@ void Game::FrameUpdate()
 
 void Game::OnConnect()
 {
-
+    Util::GetInstance().PrintLog(L"On Connect...");
 }
 
 void Game::OnReceive(Packet* packet)

@@ -22,7 +22,7 @@
 #include <timeapi.h>
 
 #define SERVER_IP "127.0.0.1"
-#define SERVER_PORT 25000
+#define SERVER_PORT 5000
 #define BUFFER_SIZE 1024
 #define RING_BUFFER_SIZE 10000
 

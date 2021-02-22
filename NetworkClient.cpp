@@ -13,26 +13,59 @@ NetworkClient::~NetworkClient()
 	WSACleanup();
 }
 
+bool NetworkClient::Connect(std::string_view ip, unsigned short port)
+{
+    return mConnection.Connect(ip, port);
+}
+
+void NetworkClient::SendPacket(std::shared_ptr<Packet> packet)
+{
+    mConnection.SendPacket(packet);
+}
+
 void NetworkClient::ProcessUserWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch (message)
+    if (message == UM_SOCKET)
     {
-        case UM_SOCKET:
+        switch (WSAGETSELECTEVENT(lParam))
         {
-            switch (WSAGETSELECTEVENT(lParam))
-            {
-            case FD_CONNECT:
-                break;
-            case FD_READ:
-                break;
-            case FD_WRITE:
-                break;
-            case FD_CLOSE:
-                break;
-            }            
+        case FD_CONNECT:
+        {
+            OnConnect();
         }
         break;
-    }
+
+        case FD_READ:
+        {
+            int recvSize = mConnection.Receive();
+            if (recvSize > 0)
+            {
+                std::queue<std::shared_ptr<Packet>> packetQueue;
+                mConnection.GetPacket(&packetQueue);
+
+                while (!packetQueue.empty())
+                {
+                    auto packet = packetQueue.front();
+                    packetQueue.pop();
+
+                    OnReceive(packet.get());
+                }
+            }
+            else
+            {
+                OnDisconnect();
+            }
+        }
+        break;
+
+        case FD_WRITE:
+            break;
+
+        case FD_CLOSE:
+            OnDisconnect();
+            break;
+        }
+    }    
 }
 
 void NetworkClient::InitializeNetwork()

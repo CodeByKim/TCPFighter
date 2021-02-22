@@ -19,6 +19,16 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
 
     LoadAllSprites();
     RegisterInputHandlers();
+
+    if (!Connect(SERVER_IP, SERVER_PORT))
+    {
+        if (WSAGetLastError() != WSAEWOULDBLOCK)
+        {
+            MessageBox(mhWnd, L"Connect()", L"Error", 0);
+            return;
+        }
+    }
+
     CreateGameObject();
 }
 
