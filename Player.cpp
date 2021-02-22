@@ -13,6 +13,8 @@ Player::Player(int id, Position2D position, char dir, int hp)
 	, mCurrentState(ePlayerState::Idle)
 	, mHp(hp)
 	, mIsMove(false)
+	, mCurrentMoveDir(dir)
+	, mPrevMoveDir(dir)
 {	
 	InitializeAnimation();
 }
@@ -60,6 +62,9 @@ void Player::MovePlayer(int dir)
 	}	
 
 	mIsMove = true;
+	
+	mPrevMoveDir = mCurrentMoveDir;
+	mCurrentMoveDir = dir;
 }
 
 int attack;		//이게 뭐지.......
@@ -85,6 +90,13 @@ void Player::OnFrameUpdate()
 
 		case ePlayerState::Move:
 		{
+			//이동 방향이 바뀜
+			if (mPrevMoveDir != mCurrentMoveDir)
+			{
+				Util::GetInstance().PrintLog(L"Send Old Stop Packet!!");
+				Util::GetInstance().PrintLog(L"Send New Move Packet!!");
+			}
+
 			if (!mIsMove)
 			{
 				Util::GetInstance().PrintLog(L"Send Stop Packet!!");

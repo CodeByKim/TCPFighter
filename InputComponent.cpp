@@ -71,58 +71,47 @@ void InputComponent::HandleMoveInput()
 {
 	if ((GetAsyncKeyState(VK_LEFT) & 0x8000) 
 		&& (GetAsyncKeyState(VK_UP) & 0x8000))
-	{
-		//Util::GetInstance().PrintLog(L"UL");
+	{		
 		mInputHandlers[dfPACKET_MOVE_DIR_LU]();
 		return;
 	}
 
 	if ((GetAsyncKeyState(VK_LEFT) & 0x8000)
 		&& (GetAsyncKeyState(VK_DOWN) & 0x8000))
-	{
-		//Util::GetInstance().PrintLog(L"DL");
+	{		
 		mInputHandlers[dfPACKET_MOVE_DIR_LD]();
 		return;
 	}
 
 	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		&& (GetAsyncKeyState(VK_UP) & 0x8000))
-	{
-		//Util::GetInstance().PrintLog(L"UR");
+	{		
 		mInputHandlers[dfPACKET_MOVE_DIR_RU]();
 		return;
 	}
 
 	if ((GetAsyncKeyState(VK_RIGHT) & 0x8000)
 		&& (GetAsyncKeyState(VK_DOWN) & 0x8000))
-	{
-		//Util::GetInstance().PrintLog(L"DR");
+	{		
 		mInputHandlers[dfPACKET_MOVE_DIR_RD]();
 		return;
 	}
 
 
 	if (GetAsyncKeyState(VK_LEFT) & 0x8000)
-	{
-		//Util::GetInstance().PrintLog(L"LL");
+	{		
 		mInputHandlers[dfPACKET_MOVE_DIR_LL]();
 	}
-
-	if (GetAsyncKeyState(VK_UP) & 0x8000)
-	{
-		//Util::GetInstance().PrintLog(L"UU");
+	else if (GetAsyncKeyState(VK_UP) & 0x8000)
+	{		
 		mInputHandlers[dfPACKET_MOVE_DIR_UU]();
 	}
-
-	if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
-	{
-		//Util::GetInstance().PrintLog(L"RR");
+	else if (GetAsyncKeyState(VK_RIGHT) & 0x8000)
+	{		
 		mInputHandlers[dfPACKET_MOVE_DIR_RR]();
 	}
-
-	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
-	{
-		//Util::GetInstance().PrintLog(L"DD");
+	else if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	{		
 		mInputHandlers[dfPACKET_MOVE_DIR_DD]();
 	}
 }

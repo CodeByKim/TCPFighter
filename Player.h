@@ -37,7 +37,10 @@ private:
 	ePlayerDirection mCurrentDir;
 	ePlayerState mCurrentState;
 	std::unique_ptr<SpriteAnimation> mAnimation;
+
 	int mHp;
 	bool mIsMove;
+	int mCurrentMoveDir;		//8πÊ«‚
+	int mPrevMoveDir;
 };
 
