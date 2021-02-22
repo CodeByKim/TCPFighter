@@ -12,6 +12,7 @@ Player::Player(int id, Position2D position, char dir, int hp)
 	, mCurrentDir(dir == dfPACKET_MOVE_DIR_LL ? ePlayerDirection::Left : ePlayerDirection::Right)
 	, mCurrentState(ePlayerState::Idle)
 	, mHp(hp)
+	, mIsMove(false)
 {	
 	InitializeAnimation();
 }
@@ -21,7 +22,6 @@ Player::~Player()
 
 }
 
-bool isMove = false;
 void Player::MovePlayer(int dir)
 {	
 	if (mCurrentState == ePlayerState::Attack)
@@ -59,14 +59,7 @@ void Player::MovePlayer(int dir)
 		break;
 	}	
 
-	if (mCurrentState != ePlayerState::Move)
-	{
-		//»÷µå ÆÐÅ¶
-		Util::GetInstance().PrintLog(L"Send Move Packet!!");
-	}
-
-	isMove = true;
-	mCurrentState = ePlayerState::Move;
+	mIsMove = true;
 }
 
 int attack;		//ÀÌ°Ô ¹¹Áö.......
@@ -82,69 +75,33 @@ void Player::OnFrameUpdate()
 	{
 		case ePlayerState::Idle:
 		{
-			if (mCurrentDir == ePlayerDirection::Left)
+			if (mIsMove)
 			{
-				mAnimation->Play(L"Stand_L");				
-			}
-			else
-			{
-				mAnimation->Play(L"Stand_R");
+				Util::GetInstance().PrintLog(L"Send Move Packet!!");
+				mCurrentState = ePlayerState::Move;
 			}
 		}
 		break;
 
 		case ePlayerState::Move:
 		{
-			if (mCurrentDir == ePlayerDirection::Left)
+			if (!mIsMove)
 			{
-				mAnimation->Play(L"Move_L");				
-			}
-			else
-			{
-				mAnimation->Play(L"Move_R");				
-			}
-
-			if (!isMove)
-			{
-				mCurrentState = ePlayerState::Idle;
 				Util::GetInstance().PrintLog(L"Send Stop Packet!!");
+				mCurrentState = ePlayerState::Idle;				
 			}			
 		}
 		break;
 
 		case ePlayerState::Attack:
 		{
-			if (mCurrentDir == ePlayerDirection::Left)
-			{
-				if(attack == dfPACKET_ATTACK_1)
-					mAnimation->Play(L"Attack1_L");
-				else if (attack == dfPACKET_ATTACK_2)
-					mAnimation->Play(L"Attack2_L");
-				else
-					mAnimation->Play(L"Attack3_L");
 
-				mAnimation->mEndEventCallback = [this]() { 
-					mCurrentState = ePlayerState::Idle;
-				};
-			}
-			else
-			{
-				if (attack == dfPACKET_ATTACK_1)
-					mAnimation->Play(L"Attack1_R");
-				else if (attack == dfPACKET_ATTACK_2)
-					mAnimation->Play(L"Attack2_R");
-				else
-					mAnimation->Play(L"Attack3_R");
-
-				mAnimation->mEndEventCallback = [this]() {
-					mCurrentState = ePlayerState::Idle;
-				};
-			}
 		}
 		break;
 	}
 
-	isMove = false;
+	PlayAnimation();
+	mIsMove = false;
 }
 
 void Player::OnRender(Graphics& graphics)
@@ -170,4 +127,56 @@ void Player::InitializeAnimation()
 	mAnimation->AddAnimation(L"Attack2_R", pivot, 4);
 	mAnimation->AddAnimation(L"Attack3_L", pivot, 4);
 	mAnimation->AddAnimation(L"Attack3_R", pivot, 4);
+}
+
+void Player::PlayAnimation()
+{
+	if (mCurrentDir == ePlayerDirection::Left)
+	{
+		switch (mCurrentState)
+		{
+		case ePlayerState::Idle:
+			mAnimation->Play(L"Stand_L");
+			break;
+		case ePlayerState::Move:
+			mAnimation->Play(L"Move_L");
+			break;
+		case ePlayerState::Attack:
+			if (attack == dfPACKET_ATTACK_1)
+				mAnimation->Play(L"Attack1_L");
+			else if (attack == dfPACKET_ATTACK_2)
+				mAnimation->Play(L"Attack2_L");
+			else
+				mAnimation->Play(L"Attack3_L");
+
+			mAnimation->mEndEventCallback = [this]() {
+				mCurrentState = ePlayerState::Idle;
+			};
+			break;
+		}
+	}
+	else
+	{
+		switch (mCurrentState)
+		{
+		case ePlayerState::Idle:
+			mAnimation->Play(L"Stand_R");
+			break;
+		case ePlayerState::Move:
+			mAnimation->Play(L"Move_R");
+			break;
+		case ePlayerState::Attack:
+			if (attack == dfPACKET_ATTACK_1)
+				mAnimation->Play(L"Attack1_R");
+			else if (attack == dfPACKET_ATTACK_2)
+				mAnimation->Play(L"Attack2_R");
+			else
+				mAnimation->Play(L"Attack3_R");
+
+			mAnimation->mEndEventCallback = [this]() {
+				mCurrentState = ePlayerState::Idle;
+			};
+			break;
+		}
+	}
 }

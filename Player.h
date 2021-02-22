@@ -32,10 +32,12 @@ public:
 
 private:
 	void InitializeAnimation();
+	void PlayAnimation();
 
 	ePlayerDirection mCurrentDir;
 	ePlayerState mCurrentState;
 	std::unique_ptr<SpriteAnimation> mAnimation;
 	int mHp;
+	bool mIsMove;
 };
 
