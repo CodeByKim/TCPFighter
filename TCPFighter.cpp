@@ -31,7 +31,7 @@ void TCPFighter::FrameUpdate()
 {
     mRender->DrawSprite(mBackgroundSprite.get(), Position2D{ 0,0 });
 
-    Game::FrameUpdate();    
+    Game::FrameUpdate();
 }
 
 void TCPFighter::LoadAllSprites()

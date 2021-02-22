@@ -1,6 +1,8 @@
 #include "Window.h"
 #include "Util.h"
 
+Window* app = nullptr;
+
 Window::Window(HINSTANCE hInstance, int nCmdShow)
     : mhInstance(hInstance)
     , mScreenSize{ SCREEN_WIDTH, SCREEN_HEIGHT }
@@ -18,6 +20,7 @@ Window::Window(HINSTANCE hInstance, int nCmdShow)
     }
 
     timeBeginPeriod(1);
+    app = this;
 }
 
 Window::~Window()
@@ -101,6 +104,11 @@ bool Window::RegisterWindowClass()
 
 LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    if (app != nullptr)
+    {
+        app->ProcessUserWindowMessage(hWnd, message, wParam, lParam);
+    }    
+
     switch (message)
     {
     case WM_PAINT:

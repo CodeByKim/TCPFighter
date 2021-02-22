@@ -99,6 +99,18 @@
     <ClInclude Include="InputComponent.h">
       <Filter>헤더 파일\Components</Filter>
     </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="RingBuffer.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Socket.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>헤더 파일\Network</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="TCPFighter-Remake.rc">
@@ -164,6 +176,18 @@
     </ClCompile>
     <ClCompile Include="InputComponent.cpp">
       <Filter>소스 파일\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>소스 파일\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="RingBuffer.cpp">
+      <Filter>소스 파일\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Socket.cpp">
+      <Filter>소스 파일\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Packet.cpp">
+      <Filter>소스 파일\Network</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

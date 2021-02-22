@@ -143,17 +143,21 @@
   <ItemGroup>
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="CommonLibrary.h" />
+    <ClInclude Include="Connection.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameObjectComponent.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="InputComponent.h" />
     <ClInclude Include="NetworkClient.h" />
+    <ClInclude Include="Packet.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RenderComponent.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Resources.h" />
+    <ClInclude Include="RingBuffer.h" />
     <ClInclude Include="ScreenMemoryBuffer.h" />
+    <ClInclude Include="Socket.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="SpriteAnimation.h" />
     <ClInclude Include="TCPFighter.h" />
@@ -162,6 +166,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="Connection.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameObjectComponent.cpp" />
@@ -169,10 +174,13 @@
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NetworkClient.cpp" />
+    <ClCompile Include="Packet.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderComponent.cpp" />
     <ClCompile Include="Resources.cpp" />
+    <ClCompile Include="RingBuffer.cpp" />
     <ClCompile Include="ScreenMemoryBuffer.cpp" />
+    <ClCompile Include="Socket.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
     <ClCompile Include="TCPFighter.cpp" />
