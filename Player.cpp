@@ -4,6 +4,7 @@
 #include "SpriteAnimation.h"
 #include "Resources.h"
 #include "Graphics.h"
+#include "Packet.h"
 
 Player::Player(int id, Position2D position, char dir, int hp)
 	: GameObject(position, id)
@@ -20,6 +21,7 @@ Player::~Player()
 
 }
 
+bool isMove = false;
 void Player::MovePlayer(int dir)
 {	
 	if (mCurrentState == ePlayerState::Attack)
@@ -57,10 +59,17 @@ void Player::MovePlayer(int dir)
 		break;
 	}	
 
-	mCurrentState = ePlayerState::Move;	
+	if (mCurrentState != ePlayerState::Move)
+	{
+		//»÷µå ÆÐÅ¶
+		Util::GetInstance().PrintLog(L"Send Move Packet!!");
+	}
+
+	isMove = true;
+	mCurrentState = ePlayerState::Move;
 }
 
-int attack;
+int attack;		//ÀÌ°Ô ¹¹Áö.......
 void Player::Attack(int attackType)
 {
 	mCurrentState = ePlayerState::Attack;
@@ -68,7 +77,7 @@ void Player::Attack(int attackType)
 }
 
 void Player::OnFrameUpdate()
-{	
+{		
 	switch(mCurrentState)
 	{
 		case ePlayerState::Idle:
@@ -95,7 +104,11 @@ void Player::OnFrameUpdate()
 				mAnimation->Play(L"Move_R");				
 			}
 
-			mCurrentState = ePlayerState::Idle;
+			if (!isMove)
+			{
+				mCurrentState = ePlayerState::Idle;
+				Util::GetInstance().PrintLog(L"Send Stop Packet!!");
+			}			
 		}
 		break;
 
@@ -129,7 +142,9 @@ void Player::OnFrameUpdate()
 			}
 		}
 		break;
-	}	
+	}
+
+	isMove = false;
 }
 
 void Player::OnRender(Graphics& graphics)

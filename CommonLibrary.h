@@ -21,6 +21,8 @@
 #include <Windows.h>
 #include <timeapi.h>
 
+#include "PacketDefine.h"
+
 #define SERVER_IP "127.0.0.1"
 #define SERVER_PORT 5000
 #define BUFFER_SIZE 1024
@@ -53,18 +55,6 @@ struct ScreenSize
 	int height;
 };
 
-#define dfPACKET_MOVE_DIR_LL 0
-#define dfPACKET_MOVE_DIR_LU 1
-#define dfPACKET_MOVE_DIR_UU 2
-#define dfPACKET_MOVE_DIR_RU 3
-#define dfPACKET_MOVE_DIR_RR 4
-#define dfPACKET_MOVE_DIR_RD 5
-#define dfPACKET_MOVE_DIR_DD 6
-#define dfPACKET_MOVE_DIR_LD 7
-
 #define dfPACKET_ATTACK_1 8
 #define dfPACKET_ATTACK_2 9
 #define dfPACKET_ATTACK_3 10
-
-#define	dfPACKET_SC_CREATE_MY_CHARACTER	0
-#define	dfPACKET_SC_CREATE_OTHER_CHARACTER 1

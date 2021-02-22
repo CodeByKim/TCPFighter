@@ -129,11 +129,7 @@ void TCPFighter::CreateGameObject()
 {
     Position2D mapPivot = { 0, 0 };
     Sprite* mapSprite = Resources::GetInstance().CreateSprite(L"Map", mapPivot);
-    mBackgroundSprite.reset(mapSprite);
-
-    /*GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
-    mMyPlayer = std::make_shared<Player>(Position2D{ 200, 200 }, -1);
-    objectComponent->RegisterObject(mMyPlayer);*/
+    mBackgroundSprite.reset(mapSprite);    
 }
 
 void TCPFighter::SC_CREATE_MY_CHARACTER(Packet* packet)

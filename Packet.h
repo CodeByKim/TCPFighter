@@ -56,3 +56,53 @@ public:
 	short y;
 	char hp;
 };
+
+class PACKET_SC_DELETE_CHARACTER : public BasePacketData
+{
+public:
+	void Deserialize(Packet* packet) override;
+
+	int id;
+};
+
+class PACKET_SC_MOVE_START : public BasePacketData
+{
+public:
+	void Deserialize(Packet* packet) override;
+
+	int id;
+	char direction;
+	short x;
+	short y;
+};
+
+class PACKET_SC_MOVE_STOP : public BasePacketData
+{
+public:
+	void Deserialize(Packet* packet) override;
+
+	int id;
+	char direction;
+	short x;
+	short y;
+};
+
+class PACKET_CS_MOVE_START : public BasePacketData
+{
+public:
+	void Serialize(Packet* outPacket) override;
+
+	char direction;
+	short x;
+	short y;
+};
+
+class PACKET_CS_MOVE_STOP : public BasePacketData
+{
+public:
+	void Serialize(Packet* outPacket) override;
+
+	char direction;
+	short x;
+	short y;
+};
