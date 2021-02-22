@@ -65,3 +65,6 @@ struct ScreenSize
 #define dfPACKET_ATTACK_1 8
 #define dfPACKET_ATTACK_2 9
 #define dfPACKET_ATTACK_3 10
+
+#define	dfPACKET_SC_CREATE_MY_CHARACTER	0
+#define	dfPACKET_SC_CREATE_OTHER_CHARACTER 1

@@ -149,6 +149,7 @@
     <ClInclude Include="GameObjectComponent.h" />
     <ClInclude Include="Graphics.h" />
     <ClInclude Include="InputComponent.h" />
+    <ClInclude Include="MemoryStream.h" />
     <ClInclude Include="NetworkClient.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Player.h" />
@@ -173,6 +174,7 @@
     <ClCompile Include="Graphics.cpp" />
     <ClCompile Include="InputComponent.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MemoryStream.cpp" />
     <ClCompile Include="NetworkClient.cpp" />
     <ClCompile Include="Packet.cpp" />
     <ClCompile Include="Player.cpp" />

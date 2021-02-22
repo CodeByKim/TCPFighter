@@ -73,14 +73,6 @@ int Socket::Receive(char* buffer, int size)
 
 int Socket::Send(char* buffer, int size)
 {	
-	/*char buffer2[18];
-	CopyMemory(buffer2 + 0, buffer + 0, 2);
-	CopyMemory(buffer2 + 2, buffer + 2, 4);
-	CopyMemory(buffer2 + 6, buffer + 6, 4);
-	CopyMemory(buffer2 + 10, buffer + 10, 4);
-	CopyMemory(buffer2 + 14, buffer + 14, 4);
-	return send(mSocket, buffer2, 18, 0);*/
-
 	return send(mSocket, buffer, size, 0);
 }
 

@@ -5,6 +5,7 @@
 
 class RenderComponent;
 class Player;
+class Packet;
 
 class TCPFighter : public Game
 {
@@ -14,6 +15,10 @@ public:
 
 protected:
 	void FrameUpdate() override;
+	
+	void OnConnect() override;
+	void OnReceive(Packet* packet) override;
+	void OnDisconnect() override;
 
 private:
 	void LoadAllSprites();

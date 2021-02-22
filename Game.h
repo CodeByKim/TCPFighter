@@ -19,10 +19,6 @@ public:
 protected:
 	void FrameUpdate() override;
 
-	void OnConnect() override;
-	void OnReceive(Packet* packet) override;
-	void OnDisconnect() override;
-
 private:	
 	void CreateGameComponents();	
 	int CalcFps(std::chrono::high_resolution_clock::time_point startTime);

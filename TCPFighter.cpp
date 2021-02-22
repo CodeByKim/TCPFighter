@@ -7,6 +7,7 @@
 #include "GameObjectComponent.h"
 #include "RenderComponent.h"
 #include "Player.h"
+#include "Packet.h"
 
 TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
 	: Game(hInstance, nCmdShow)
@@ -42,6 +43,61 @@ void TCPFighter::FrameUpdate()
     mRender->DrawSprite(mBackgroundSprite.get(), Position2D{ 0,0 });
 
     Game::FrameUpdate();
+}
+
+void TCPFighter::OnConnect()
+{
+    Util::GetInstance().PrintLog(L"On Connect...");
+}
+
+void SC_CREATE_MY_CHARACTER(Packet* packet)
+{   
+    PACKET_SC_CREATE_MY_CHARACTER data;
+    data.Deserialize(packet);
+    
+    wchar_t str[256];
+    wsprintf(str, L"%s : %d, %d, %d, %d, %d", 
+        L"dfPACKET_SC_CREATE_MY_CHARACTER", 
+        data.id, 
+        data.direction, 
+        data.x, 
+        data.y, 
+        data.hp);
+    Util::GetInstance().PrintLog(str);
+}
+
+void SC_CREATE_OTHER_CHARACTER(Packet* packet)
+{    
+    PACKET_SC_CREATE_OTHER_CHARACTER data;
+    data.Deserialize(packet);
+
+    wchar_t str[256];
+    wsprintf(str, L"%s : %d, %d, %d, %d, %d",
+        L"dfPACKET_SC_CREATE_OTHER_CHARACTER",
+        data.id,
+        data.direction,
+        data.x,
+        data.y,
+        data.hp);
+    Util::GetInstance().PrintLog(str);
+}
+
+void TCPFighter::OnReceive(Packet* packet)
+{
+    switch (packet->header.protocol)
+    {
+        case dfPACKET_SC_CREATE_MY_CHARACTER:
+            SC_CREATE_MY_CHARACTER(packet);
+            break;
+        case dfPACKET_SC_CREATE_OTHER_CHARACTER:
+            SC_CREATE_OTHER_CHARACTER(packet);
+            break;
+    }
+}
+
+void TCPFighter::OnDisconnect()
+{
+
 }
 
 void TCPFighter::LoadAllSprites()

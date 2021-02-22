@@ -55,21 +55,6 @@ void Game::FrameUpdate()
     ShowLogAtWindowTitle(L"Logic Frame", CalcFps(start));
 }
 
-void Game::OnConnect()
-{
-    Util::GetInstance().PrintLog(L"On Connect...");
-}
-
-void Game::OnReceive(Packet* packet)
-{
-
-}
-
-void Game::OnDisconnect()
-{
-
-}
-
 void Game::CreateGameComponents()
 {
     mComponents.clear();

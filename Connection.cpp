@@ -52,7 +52,8 @@ void Connection::SendPacket(std::shared_ptr<Packet> packet)
 {	
 	//sendQueue에 넣는작업 필요...
 	//근데 일단 그냥 되는지 테스트도 해보자.
-	mSocket.Send(packet->data, packet->header.size + PACKET_HEADER_SIZE);
+	//mSocket.Send(packet->data, packet->header.size + PACKET_HEADER_SIZE);
+	mSocket.Send(packet->stream->GetBuffer(), packet->header.size + PACKET_HEADER_SIZE);
 }
 
 bool Connection::GetPacket(std::queue<std::shared_ptr<Packet>>* packetQueue)
@@ -64,7 +65,7 @@ bool Connection::GetPacket(std::queue<std::shared_ptr<Packet>>* packetQueue)
 		if (mRecvBuffer.Peek(buffer, PACKET_HEADER_SIZE))
 		{						
 			PacketHeader header;
-			CopyMemory(&header.size, buffer, PACKET_HEADER_SIZE);
+			CopyMemory(&header, buffer, PACKET_HEADER_SIZE);
 			
 			if (!mRecvBuffer.Peek(buffer, header.size + PACKET_HEADER_SIZE))
 			{
@@ -75,9 +76,9 @@ bool Connection::GetPacket(std::queue<std::shared_ptr<Packet>>* packetQueue)
 
 			std::shared_ptr<Packet> packet = std::make_shared<Packet>();
 			packet->header = header;
-			packet->data = new char[header.size];
-
-			CopyMemory(packet->data, buffer + PACKET_HEADER_SIZE, header.size);
+			packet->SetMemoryStream(buffer + PACKET_HEADER_SIZE, header.size);
+			//packet->data = new char[header.size];
+			//CopyMemory(packet->data, buffer + PACKET_HEADER_SIZE, header.size);
 			packetQueue->push(packet);
 		}
 		else
