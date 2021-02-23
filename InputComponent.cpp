@@ -2,43 +2,6 @@
 #include "Game.h"
 #include "Util.h"
 
-#pragma region Commands...
-void UpKeyCommand::Execute(TCPFighter& game)
-{
-	//game.MovePlayer(UP_KEY);
-}
-
-void DownKeyCommand::Execute(TCPFighter& game)
-{
-	//game.MovePlayer(DOWN_KEY);
-}
-
-void LeftKeyCommand::Execute(TCPFighter& game)
-{
-	//game.MovePlayer(LEFT_KEY);
-}
-
-void RightKeyCommand::Execute(TCPFighter& game)
-{
-	//game.MovePlayer(RIGHT_KEY);
-}
-
-void Attack1Command::Execute(TCPFighter& game)
-{
-	//game.MovePlayer(DOWN_KEY);
-}
-
-void Attack2Command::Execute(TCPFighter& game)
-{
-	//game.MovePlayer(LEFT_KEY);
-}
-
-void Attack3Command::Execute(TCPFighter& game)
-{
-	//game.MovePlayer(RIGHT_KEY);
-}
-#pragma endregion
-
 InputComponent::InputComponent(Game& game)
 	: BaseComponent(game)
 {
