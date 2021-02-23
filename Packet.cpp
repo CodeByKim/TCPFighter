@@ -70,3 +70,25 @@ void PACKET_SC_MOVE_STOP::Deserialize(Packet* packet)
 	packet->stream->ReadInt16(&x);
 	packet->stream->ReadInt16(&y);	
 }
+
+void PACKET_CS_ATTACK1::Serialize(MemoryStream* outStream)
+{
+	outStream->WriteInt8(direction);
+	outStream->WriteInt16(x);
+	outStream->WriteInt16(y);
+}
+
+void PACKET_SC_ATTACK1::Deserialize(Packet* packet)
+{
+	packet->stream->ReadInt32(&id);
+	packet->stream->ReadInt8((INT8*)&direction);
+	packet->stream->ReadInt16(&x);
+	packet->stream->ReadInt16(&y);
+}
+
+void PACKET_SC_DAMAGE::Deserialize(Packet* packet)
+{
+	packet->stream->ReadInt32(&attackID);
+	packet->stream->ReadInt32(&hitID);
+	packet->stream->ReadInt8((INT8*)&damage);
+}

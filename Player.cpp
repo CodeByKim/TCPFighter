@@ -18,6 +18,7 @@ Player::Player(int id, Position2D position, char dir, int hp, TCPFighter& game)
 	, mPrevMoveDir(dir)
 	, mGame(game)
 	, mIsRemote(false)
+	, mIsAttack(false)
 {	
 	InitializeAnimation();
 }
@@ -78,19 +79,14 @@ void Player::MovePlayer(int dir)
 int attack;		//ÀÌ°Ô ¹¹Áö.......
 void Player::Attack(int attackType)
 {
-	mCurrentState = ePlayerState::Attack;
+	//mCurrentState = ePlayerState::Attack;
 	attack = attackType;
+
+	mIsAttack = true;
 }
 
 void Player::RemoteMoveStart(char dir, int x, int y)
 {
-	/*mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
-	mIsMove = true;
-
-	mPosition.x = x;
-	mPosition.y = y;*/
-
-	//mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
 	mPosition.x = x;
 	mPosition.y = y;
 	MovePlayer(dir);
@@ -98,9 +94,18 @@ void Player::RemoteMoveStart(char dir, int x, int y)
 	mCurrentState = ePlayerState::Move;
 }
 
+void Player::RemoteAttack1(char dir, int x, int y)
+{
+	mPosition.x = x;
+	mPosition.y = y;
+	mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+
+	Attack(dfPACKET_CS_ATTACK1);
+	mCurrentState = ePlayerState::Attack;
+}
+
 void Player::RemoteMoveStop(char dir, int x, int y)
 {
-	//mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
 	mIsMove = false;
 
 	mPosition.x = x;
@@ -121,6 +126,12 @@ void Player::OnFrameUpdate()
 				{
 					MoveStart();
 				}				
+			}
+
+			if (mIsAttack)
+			{				
+				if (!mIsRemote)
+					AttackStart(attack);
 			}
 		}
 		break;
@@ -206,15 +217,16 @@ void Player::PlayAnimation()
 			mAnimation->Play(L"Move_L");
 			break;
 		case ePlayerState::Attack:
-			if (attack == dfPACKET_ATTACK_1)
+			if (attack == dfPACKET_CS_ATTACK1)
 				mAnimation->Play(L"Attack1_L");
-			else if (attack == dfPACKET_ATTACK_2)
+			else if (attack == dfPACKET_CS_ATTACK2)
 				mAnimation->Play(L"Attack2_L");
 			else
 				mAnimation->Play(L"Attack3_L");
 
 			mAnimation->mEndEventCallback = [this]() {
 				mCurrentState = ePlayerState::Idle;
+				mIsAttack = false;
 			};
 			break;
 		}
@@ -230,15 +242,16 @@ void Player::PlayAnimation()
 			mAnimation->Play(L"Move_R");
 			break;
 		case ePlayerState::Attack:
-			if (attack == dfPACKET_ATTACK_1)
+			if (attack == dfPACKET_CS_ATTACK1)
 				mAnimation->Play(L"Attack1_R");
-			else if (attack == dfPACKET_ATTACK_2)
+			else if (attack == dfPACKET_CS_ATTACK2)
 				mAnimation->Play(L"Attack2_R");
 			else
 				mAnimation->Play(L"Attack3_R");
 
 			mAnimation->mEndEventCallback = [this]() {
 				mCurrentState = ePlayerState::Idle;
+				mIsAttack = false;
 			};
 			break;
 		}
@@ -277,4 +290,21 @@ void Player::MoveStop()
 	mGame.SendPacket(packet);
 
 	mCurrentState = ePlayerState::Idle;
+}
+
+void Player::AttackStart(int attackType)
+{
+	PACKET_CS_ATTACK1 data;
+	data.direction = mCurrentMoveDir;
+	data.x = mPosition.x;
+	data.y = mPosition.y;
+
+	MemoryStream* stream = new MemoryStream();
+	data.Serialize(stream);
+	std::shared_ptr<Packet> packet = std::make_shared<Packet>();
+	packet->SetMemoryStream(stream);
+	packet->SetHeader(dfPACKET_CS_ATTACK1);
+	mGame.SendPacket(packet);
+
+	mCurrentState = ePlayerState::Attack;
 }

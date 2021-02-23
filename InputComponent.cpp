@@ -88,16 +88,16 @@ void InputComponent::HandleAttackInput()
 {
 	if (GetAsyncKeyState('Z') & 0x8000)
 	{
-		mInputHandlers[dfPACKET_ATTACK_1]();
+		mInputHandlers[dfPACKET_CS_ATTACK1]();
 	}
 
 	if (GetAsyncKeyState('X') & 0x8000)
 	{
-		mInputHandlers[dfPACKET_ATTACK_2]();
+		mInputHandlers[dfPACKET_CS_ATTACK2]();
 	}
 
 	if (GetAsyncKeyState('C') & 0x8000)
 	{
-		mInputHandlers[dfPACKET_ATTACK_3]();
+		mInputHandlers[dfPACKET_CS_ATTACK3]();
 	}
 }

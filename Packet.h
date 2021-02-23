@@ -109,3 +109,35 @@ public:
 	short x;
 	short y;
 };
+
+
+class PACKET_CS_ATTACK1 : public BasePacketData
+{
+public:
+	void Serialize(MemoryStream* outStream) override;
+
+	char direction;
+	short x;
+	short y;
+};
+
+class PACKET_SC_ATTACK1 : public BasePacketData
+{
+public:
+	void Deserialize(Packet* packet) override;
+
+	int id;
+	char direction;
+	short x;
+	short y;
+};
+
+class PACKET_SC_DAMAGE : public BasePacketData
+{
+public:
+	void Deserialize(Packet* packet) override;
+
+	int attackID;
+	int hitID;
+	char damage;	
+};

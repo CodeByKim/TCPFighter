@@ -71,6 +71,9 @@ void TCPFighter::OnReceive(Packet* packet)
         case dfPACKET_SC_MOVE_STOP:
             SC_MOVE_STOP(packet);
             break;
+        case dfPACKET_SC_ATTACK1:
+            SC_ATTACK1(packet);
+            break;
     }
 }
 
@@ -125,14 +128,14 @@ void TCPFighter::RegisterInputHandlers()
     inputComponent->RegisterInputHandler(dfPACKET_MOVE_DIR_LD, [this]() {
         mMyPlayer->MovePlayer(dfPACKET_MOVE_DIR_LD);
         });
-    inputComponent->RegisterInputHandler(dfPACKET_ATTACK_1, [this]() {
-        mMyPlayer->Attack(dfPACKET_ATTACK_1);
+    inputComponent->RegisterInputHandler(dfPACKET_CS_ATTACK1, [this]() {
+        mMyPlayer->Attack(dfPACKET_CS_ATTACK1);
         });
-    inputComponent->RegisterInputHandler(dfPACKET_ATTACK_2, [this]() {
-        mMyPlayer->Attack(dfPACKET_ATTACK_2);
+    inputComponent->RegisterInputHandler(dfPACKET_CS_ATTACK2, [this]() {
+        mMyPlayer->Attack(dfPACKET_CS_ATTACK2);
         });
-    inputComponent->RegisterInputHandler(dfPACKET_ATTACK_3, [this]() {
-        mMyPlayer->Attack(dfPACKET_ATTACK_3);
+    inputComponent->RegisterInputHandler(dfPACKET_CS_ATTACK3, [this]() {
+        mMyPlayer->Attack(dfPACKET_CS_ATTACK3);
         });
 }
 
@@ -223,4 +226,18 @@ void TCPFighter::SC_MOVE_STOP(Packet* packet)
     }
 
     mOtherPlayers[data.id]->RemoteMoveStop(data.direction, data.x, data.y);
+}
+
+void TCPFighter::SC_ATTACK1(Packet* packet)
+{
+    PACKET_SC_ATTACK1 data;
+    data.Deserialize(packet);
+
+    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    {
+        Util::GetInstance().PrintError(L"not found remote player");
+        return;
+    }
+
+    mOtherPlayers[data.id]->RemoteAttack1(data.direction, data.x, data.y);
 }

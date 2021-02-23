@@ -31,6 +31,7 @@ private:
 	void SC_CREATE_OTHER_CHARACTER(Packet* packet);
 	void SC_MOVE_START(Packet* packet);
 	void SC_MOVE_STOP(Packet* packet);
+	void SC_ATTACK1(Packet* packet);
 
 	std::unique_ptr<Sprite> mBackgroundSprite;
 	RenderComponent* mRender;

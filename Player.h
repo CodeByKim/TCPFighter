@@ -32,6 +32,10 @@ public:
 	void RemoteMoveStart(char dir, int x, int y);
 	void RemoteMoveStop(char dir, int x, int y);
 
+	void RemoteAttack1(char dir, int x, int y);
+	void RemoteAttack2(char dir, int x, int y);
+	void RemoteAttack3(char dir, int x, int y);
+
 	void OnFrameUpdate() override;
 	void OnRender(Graphics& graphics) override;
 
@@ -40,6 +44,7 @@ private:
 	void PlayAnimation();
 	void MoveStart();
 	void MoveStop();
+	void AttackStart(int attackType);
 
 	TCPFighter& mGame;
 	ePlayerDirection mCurrentDir;
@@ -48,6 +53,7 @@ private:
 
 	int mHp;
 	bool mIsMove;
+	bool mIsAttack;
 	bool mIsRemote;
 	int mCurrentMoveDir;		//8πÊ«‚
 	int mPrevMoveDir;
