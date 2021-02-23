@@ -26,24 +26,21 @@ public:
 		header.protocol = protocol;
 	}
 	PacketHeader header;
-	MemoryStream* stream;
-	//char* data;
+	MemoryStream* stream;	
 };
 
 class BasePacketData
 {
 public:	
 	virtual void Serialize(MemoryStream* outStream) {}
-	virtual void Deserialize(Packet* packet) {}
-	//virtual int GetCalcSize() = 0;
+	virtual void Deserialize(Packet* packet) {}	
 };
 
 class PACKET_SC_CREATE_MY_CHARACTER : public BasePacketData
 {
 public:	
 	void Deserialize(Packet* packet) override;
-	//int GetCalcSize() override;
-	
+		
 	int id;
 	char direction;
 	short x;
@@ -54,8 +51,7 @@ public:
 class PACKET_SC_CREATE_OTHER_CHARACTER : public BasePacketData
 {
 public:	
-	void Deserialize(Packet* packet) override;
-	//int GetCalcSize() override;
+	void Deserialize(Packet* packet) override;	
 
 	int id;
 	char direction;
@@ -98,7 +94,7 @@ class PACKET_CS_MOVE_START : public BasePacketData
 {
 public:
 	void Serialize(MemoryStream* outStream) override;
-	//int GetCalcSize() override;
+	
 	char direction;
 	short x;
 	short y;
@@ -108,7 +104,7 @@ class PACKET_CS_MOVE_STOP : public BasePacketData
 {
 public:
 	void Serialize(MemoryStream* outStream) override;
-	//int GetCalcSize() override;
+
 	char direction;
 	short x;
 	short y;

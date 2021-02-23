@@ -21,6 +21,11 @@ void InputComponent::RegisterInputHandler(int message, std::function<void()> fun
 
 void InputComponent::Update()
 {	
+	if (!mGame.IsFocus())
+	{
+		return;
+	}
+
 	HandleMoveInput();
 	HandleAttackInput();
 }
@@ -34,7 +39,7 @@ void InputComponent::HandleMoveInput()
 {
 	if ((GetAsyncKeyState(VK_LEFT) & 0x8000) 
 		&& (GetAsyncKeyState(VK_UP) & 0x8000))
-	{		
+	{				
 		mInputHandlers[dfPACKET_MOVE_DIR_LU]();
 		return;
 	}

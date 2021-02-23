@@ -9,6 +9,7 @@ public:
 	
 	void Run();
 	void SetScreenSize(int screenWidth, int screenHeight);	
+	bool IsFocus();
 
 protected:
 	virtual void FrameUpdate() = 0;
@@ -17,6 +18,7 @@ protected:
 	HINSTANCE mhInstance;
 	HWND mhWnd;
 	ScreenSize mScreenSize;
+	bool mIsFocus;
 
 private:
 	bool RegisterWindowClass();

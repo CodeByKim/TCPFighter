@@ -6,6 +6,7 @@ Window* app = nullptr;
 Window::Window(HINSTANCE hInstance, int nCmdShow)
     : mhInstance(hInstance)
     , mScreenSize{ SCREEN_WIDTH, SCREEN_HEIGHT }
+    , mIsFocus(false)
 {
     if (!RegisterWindowClass())
     {
@@ -102,6 +103,11 @@ bool Window::RegisterWindowClass()
     return RegisterClassExW(&wcex);
 }
 
+bool Window::IsFocus()
+{
+    return mIsFocus;
+}
+
 LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     if (app != nullptr)
@@ -111,6 +117,14 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
 
     switch (message)
     {
+    case WM_SETFOCUS:
+        if (app != nullptr)
+            app->mIsFocus = true;
+        break;
+    case WM_KILLFOCUS:
+        if (app != nullptr)
+            app->mIsFocus = false;
+        break;
     case WM_PAINT:
     {
         PAINTSTRUCT ps;

@@ -17,6 +17,7 @@ Player::Player(int id, Position2D position, char dir, int hp, TCPFighter& game)
 	, mCurrentMoveDir(dir)
 	, mPrevMoveDir(dir)
 	, mGame(game)
+	, mIsRemote(false)
 {	
 	InitializeAnimation();
 }
@@ -24,6 +25,11 @@ Player::Player(int id, Position2D position, char dir, int hp, TCPFighter& game)
 Player::~Player()
 {
 
+}
+
+void Player::SetRemote()
+{
+	mIsRemote = true;
 }
 
 void Player::MovePlayer(int dir)
@@ -76,6 +82,24 @@ void Player::Attack(int attackType)
 	attack = attackType;
 }
 
+void Player::RemoteMoveStart(char dir, int x, int y)
+{
+	mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+	mIsMove = true;
+
+	mPosition.x = x;
+	mPosition.y = y;
+}
+
+void Player::RemoteMoveStop(char dir, int x, int y)
+{
+	mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+	mIsMove = false;
+
+	mPosition.x = x;
+	mPosition.y = y;
+}
+
 void Player::OnFrameUpdate()
 {		
 	switch(mCurrentState)
@@ -83,22 +107,11 @@ void Player::OnFrameUpdate()
 		case ePlayerState::Idle:
 		{
 			if (mIsMove)
-			{
-				Util::GetInstance().PrintLog(L"Send Move Packet!!");
-
-				PACKET_CS_MOVE_START data;
-				data.direction = mCurrentMoveDir;
-				data.x = mPosition.x;
-				data.y = mPosition.y;
-
-				MemoryStream* stream = new MemoryStream();
-				data.Serialize(stream);
-				std::shared_ptr<Packet> packet = std::make_shared<Packet>();
-				packet->SetMemoryStream(stream);
-				packet->SetHeader(dfPACKET_CS_MOVE_START);
-				mGame.SendPacket(packet);
-
-				mCurrentState = ePlayerState::Move;
+			{		
+				if (!mIsRemote)
+				{
+					MoveStart();
+				}				
 			}
 		}
 		break;
@@ -107,27 +120,20 @@ void Player::OnFrameUpdate()
 		{
 			//이동 방향이 바뀜
 			if (mPrevMoveDir != mCurrentMoveDir)
-			{
-				Util::GetInstance().PrintLog(L"Send Old Stop Packet!!");
-				Util::GetInstance().PrintLog(L"Send New Move Packet!!");
+			{			
+				if (!mIsRemote)
+				{
+					MoveStop();
+					MoveStart();
+				}				
 			}
 
 			if (!mIsMove)
-			{
-				Util::GetInstance().PrintLog(L"Send Stop Packet!!");
-
-				PACKET_CS_MOVE_STOP data;
-				data.direction = mCurrentMoveDir;
-				data.x = mPosition.x;
-				data.y = mPosition.y;
-
-				MemoryStream* stream = new MemoryStream();
-				data.Serialize(stream);
-				std::shared_ptr<Packet> packet = std::make_shared<Packet>();
-				packet->SetMemoryStream(stream);
-				packet->SetHeader(dfPACKET_CS_MOVE_STOP);
-				mGame.SendPacket(packet);
-				mCurrentState = ePlayerState::Idle;				
+			{				
+				if (!mIsRemote)
+				{
+					MoveStop();
+				}				
 			}			
 		}
 		break;
@@ -140,7 +146,11 @@ void Player::OnFrameUpdate()
 	}
 
 	PlayAnimation();
-	mIsMove = false;
+
+	if (!mIsRemote)
+	{
+		mIsMove = false;
+	}	
 }
 
 void Player::OnRender(Graphics& graphics)
@@ -218,4 +228,38 @@ void Player::PlayAnimation()
 			break;
 		}
 	}
+}
+
+void Player::MoveStart()
+{
+	PACKET_CS_MOVE_START data;
+	data.direction = mCurrentMoveDir;
+	data.x = mPosition.x;
+	data.y = mPosition.y;
+
+	MemoryStream* stream = new MemoryStream();
+	data.Serialize(stream);
+	std::shared_ptr<Packet> packet = std::make_shared<Packet>();
+	packet->SetMemoryStream(stream);
+	packet->SetHeader(dfPACKET_CS_MOVE_START);
+	mGame.SendPacket(packet);
+
+	mCurrentState = ePlayerState::Move;
+}
+
+void Player::MoveStop()
+{
+	PACKET_CS_MOVE_STOP data;
+	data.direction = mCurrentMoveDir;
+	data.x = mPosition.x;
+	data.y = mPosition.y;
+
+	MemoryStream* stream = new MemoryStream();
+	data.Serialize(stream);
+	std::shared_ptr<Packet> packet = std::make_shared<Packet>();
+	packet->SetMemoryStream(stream);
+	packet->SetHeader(dfPACKET_CS_MOVE_STOP);
+	mGame.SendPacket(packet);
+
+	mCurrentState = ePlayerState::Idle;
 }

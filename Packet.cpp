@@ -32,11 +32,6 @@ void PACKET_SC_CREATE_MY_CHARACTER::Deserialize(Packet* packet)
 	packet->stream->ReadInt8((INT8*)&hp);
 }
 
-//int PACKET_SC_CREATE_MY_CHARACTER::GetCalcSize()
-//{
-//	return 0;
-//}
-
 void PACKET_SC_CREATE_OTHER_CHARACTER::Deserialize(Packet* packet)
 {
 	packet->stream->ReadInt32(&id);
@@ -46,27 +41,12 @@ void PACKET_SC_CREATE_OTHER_CHARACTER::Deserialize(Packet* packet)
 	packet->stream->ReadInt8((INT8*)&hp);
 }
 
-//int PACKET_SC_CREATE_OTHER_CHARACTER::GetCalcSize()
-//{
-//	return 0;
-//}
-
 void PACKET_CS_MOVE_START::Serialize(MemoryStream* outStream)
 {
 	outStream->WriteInt8(direction);
 	outStream->WriteInt16(x);
 	outStream->WriteInt16(y);
-
-	/*outPacket->stream = new MemoryStream();
-	outPacket->stream->WriteInt8(direction);
-	outPacket->stream->WriteInt16(x);
-	outPacket->stream->WriteInt16(y);*/
 }
-
-//int PACKET_CS_MOVE_START::GetCalcSize()
-//{
-//	return 0;
-//}
 
 void PACKET_CS_MOVE_STOP::Serialize(MemoryStream* outStream)
 {
@@ -75,7 +55,18 @@ void PACKET_CS_MOVE_STOP::Serialize(MemoryStream* outStream)
 	outStream->WriteInt16(y);
 }
 
-//int PACKET_CS_MOVE_STOP::GetCalcSize()
-//{
-//	return 0;
-//}
+void PACKET_SC_MOVE_START::Deserialize(Packet* packet)
+{
+	packet->stream->ReadInt32(&id);
+	packet->stream->ReadInt8((INT8*)&direction);
+	packet->stream->ReadInt16(&x);
+	packet->stream->ReadInt16(&y);	
+}
+
+void PACKET_SC_MOVE_STOP::Deserialize(Packet* packet)
+{
+	packet->stream->ReadInt32(&id);
+	packet->stream->ReadInt8((INT8*)&direction);
+	packet->stream->ReadInt16(&x);
+	packet->stream->ReadInt16(&y);	
+}

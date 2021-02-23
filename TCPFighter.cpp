@@ -65,6 +65,12 @@ void TCPFighter::OnReceive(Packet* packet)
         case dfPACKET_SC_CREATE_OTHER_CHARACTER:
             SC_CREATE_OTHER_CHARACTER(packet);
             break;
+        case dfPACKET_SC_MOVE_START:
+            SC_MOVE_START(packet);
+            break;
+        case dfPACKET_SC_MOVE_STOP:
+            SC_MOVE_STOP(packet);
+            break;
     }
 }
 
@@ -177,4 +183,36 @@ void TCPFighter::SC_CREATE_OTHER_CHARACTER(Packet* packet)
         data.y,
         data.hp);
     Util::GetInstance().PrintLog(str);
+
+    GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
+    auto otherPlayer = std::make_shared<Player>(
+        data.id,
+        Position2D{ data.x, data.y },
+        data.direction,
+        data.hp,
+        *this);
+
+    otherPlayer->SetRemote();
+    objectComponent->RegisterObject(otherPlayer);
+    mOtherPlayers.insert(std::make_pair(data.id, otherPlayer));
+}
+
+void TCPFighter::SC_MOVE_START(Packet* packet)
+{
+    PACKET_SC_MOVE_START data;
+    data.Deserialize(packet);
+
+    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    {
+        Util::GetInstance().PrintError(L"not found remote player");
+        return;
+    }
+
+    mOtherPlayers[data.id]->RemoteMoveStart(data.direction, data.x, data.y);
+}
+
+void TCPFighter::SC_MOVE_STOP(Packet* packet)
+{
+    PACKET_SC_MOVE_STOP data;
+    data.Deserialize(packet);
 }
