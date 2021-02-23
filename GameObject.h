@@ -12,7 +12,10 @@ public:
 	virtual void OnRender(Graphics& graphics) = 0;
 
 	int GetID();
-
+	Position2D& GetPosition()
+	{
+		return mPosition;
+	}
 protected:
 	Position2D mPosition;
 	int mID;

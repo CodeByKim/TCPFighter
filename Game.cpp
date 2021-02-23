@@ -48,6 +48,7 @@ void Game::FrameUpdate()
         mComponents[i]->Update();        
     }
 
+    //OnFrameUpdate();
     std::chrono::nanoseconds elapsed = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - start);
     float spent = elapsed.count() / 1000000.0f;    
     Sleep(20 - spent);

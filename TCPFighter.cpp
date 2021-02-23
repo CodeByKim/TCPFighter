@@ -45,10 +45,10 @@ void TCPFighter::SendPacket(std::shared_ptr<Packet> packet)
 }
 
 void TCPFighter::FrameUpdate()
-{
-    mRender->DrawSprite(mBackgroundSprite.get(), Position2D{ 0,0 });
-
+{   
     Game::FrameUpdate();
+
+    mRender->DrawSprite(mBackgroundSprite.get(), Position2D{ 0,0 });    
 }
 
 void TCPFighter::OnConnect()

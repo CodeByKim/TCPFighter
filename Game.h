@@ -17,6 +17,7 @@ public:
 	BaseComponent* GetComponent(eComponentType type);	
 	
 protected:
+	//virtual void OnFrameUpdate() = 0;
 	void FrameUpdate() override;
 
 private:	

@@ -33,7 +33,6 @@ void GameObjectComponent::RegisterObject(std::shared_ptr<GameObject> object)
 
 void GameObjectComponent::DeleteObject(std::shared_ptr<GameObject> object)
 {
-	//mGameObjects.push_back(object);
 	for (size_t i = 0; i < mGameObjects.size(); i++)
 	{
 		if (mGameObjects[i]->GetID() == object->GetID())

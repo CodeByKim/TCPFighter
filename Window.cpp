@@ -6,7 +6,7 @@ Window* app = nullptr;
 Window::Window(HINSTANCE hInstance, int nCmdShow)
     : mhInstance(hInstance)
     , mScreenSize{ SCREEN_WIDTH, SCREEN_HEIGHT }
-    , mIsFocus(false)
+    , mIsFocus(true)
 {
     if (!RegisterWindowClass())
     {
@@ -128,7 +128,7 @@ LRESULT CALLBACK Window::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM 
     case WM_PAINT:
     {
         PAINTSTRUCT ps;
-        HDC hdc = BeginPaint(hWnd, &ps);
+        HDC hdc = BeginPaint(hWnd, &ps);        
         EndPaint(hWnd, &ps);
     }
     break;
