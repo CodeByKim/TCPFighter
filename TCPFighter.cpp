@@ -74,6 +74,12 @@ void TCPFighter::OnReceive(Packet* packet)
         case dfPACKET_SC_ATTACK1:
             SC_ATTACK1(packet);
             break;
+        case dfPACKET_SC_ATTACK2:
+            SC_ATTACK2(packet);
+            break;
+        case dfPACKET_SC_ATTACK3:
+            SC_ATTACK3(packet);
+            break;
         case dfPACKET_SC_DAMAGE:
             SC_DAMAGE(packet);
             break;
@@ -245,6 +251,34 @@ void TCPFighter::SC_ATTACK1(Packet* packet)
     mOtherPlayers[data.id]->RemoteAttack1(data.direction, data.x, data.y);
 }
 
+void TCPFighter::SC_ATTACK2(Packet* packet)
+{
+    PACKET_SC_ATTACK2 data;
+    data.Deserialize(packet);
+
+    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    {
+        Util::GetInstance().PrintError(L"not found remote player");
+        return;
+    }
+
+    mOtherPlayers[data.id]->RemoteAttack2(data.direction, data.x, data.y);
+}
+
+void TCPFighter::SC_ATTACK3(Packet* packet)
+{
+    PACKET_SC_ATTACK3 data;
+    data.Deserialize(packet);
+
+    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    {
+        Util::GetInstance().PrintError(L"not found remote player");
+        return;
+    }
+
+    mOtherPlayers[data.id]->RemoteAttack3(data.direction, data.x, data.y);
+}
+
 void TCPFighter::SC_DAMAGE(Packet* packet)
 {
     PACKET_SC_DAMAGE data;
@@ -257,7 +291,5 @@ void TCPFighter::SC_DAMAGE(Packet* packet)
     else
     {
         mMyPlayer->Hit(data.damage);
-    }
-
-    //mOtherPlayers[data.id]->RemoteAttack1(data.direction, data.x, data.y);
+    }    
 }

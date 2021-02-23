@@ -123,6 +123,42 @@ void Player::RemoteAttack1(char dir, int x, int y)
 	mCurrentState = ePlayerState::Attack;
 }
 
+void Player::RemoteAttack2(char dir, int x, int y)
+{
+	mPosition.x = x;
+	mPosition.y = y;
+
+	if (dir == dfPACKET_MOVE_DIR_LL)
+	{
+		mCurrentDir = ePlayerDirection::Left;
+	}
+	else if (dir == dfPACKET_MOVE_DIR_RR)
+	{
+		mCurrentDir = ePlayerDirection::Right;
+	}
+
+	Attack(dfPACKET_CS_ATTACK2);
+	mCurrentState = ePlayerState::Attack;
+}
+
+void Player::RemoteAttack3(char dir, int x, int y)
+{
+	mPosition.x = x;
+	mPosition.y = y;
+
+	if (dir == dfPACKET_MOVE_DIR_LL)
+	{
+		mCurrentDir = ePlayerDirection::Left;
+	}
+	else if (dir == dfPACKET_MOVE_DIR_RR)
+	{
+		mCurrentDir = ePlayerDirection::Right;
+	}
+
+	Attack(dfPACKET_CS_ATTACK3);
+	mCurrentState = ePlayerState::Attack;
+}
+
 void Player::RemoteMoveStop(char dir, int x, int y)
 {
 	mIsMove = false;
@@ -322,7 +358,7 @@ void Player::AttackStart(int attackType)
 	data.Serialize(stream);
 	std::shared_ptr<Packet> packet = std::make_shared<Packet>();
 	packet->SetMemoryStream(stream);
-	packet->SetHeader(dfPACKET_CS_ATTACK1);
+	packet->SetHeader(attackType);
 	mGame.SendPacket(packet);
 
 	mCurrentState = ePlayerState::Attack;

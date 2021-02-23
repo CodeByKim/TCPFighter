@@ -86,6 +86,36 @@ void PACKET_SC_ATTACK1::Deserialize(Packet* packet)
 	packet->stream->ReadInt16(&y);
 }
 
+void PACKET_CS_ATTACK2::Serialize(MemoryStream* outStream)
+{
+	outStream->WriteInt8(direction);
+	outStream->WriteInt16(x);
+	outStream->WriteInt16(y);
+}
+
+void PACKET_SC_ATTACK2::Deserialize(Packet* packet)
+{
+	packet->stream->ReadInt32(&id);
+	packet->stream->ReadInt8((INT8*)&direction);
+	packet->stream->ReadInt16(&x);
+	packet->stream->ReadInt16(&y);
+}
+
+void PACKET_CS_ATTACK3::Serialize(MemoryStream* outStream)
+{
+	outStream->WriteInt8(direction);
+	outStream->WriteInt16(x);
+	outStream->WriteInt16(y);
+}
+
+void PACKET_SC_ATTACK3::Deserialize(Packet* packet)
+{
+	packet->stream->ReadInt32(&id);
+	packet->stream->ReadInt8((INT8*)&direction);
+	packet->stream->ReadInt16(&x);
+	packet->stream->ReadInt16(&y);
+}
+
 void PACKET_SC_DAMAGE::Deserialize(Packet* packet)
 {
 	packet->stream->ReadInt32(&attackID);

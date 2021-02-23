@@ -110,7 +110,6 @@ public:
 	short y;
 };
 
-
 class PACKET_CS_ATTACK1 : public BasePacketData
 {
 public:
@@ -122,6 +121,48 @@ public:
 };
 
 class PACKET_SC_ATTACK1 : public BasePacketData
+{
+public:
+	void Deserialize(Packet* packet) override;
+
+	int id;
+	char direction;
+	short x;
+	short y;
+};
+
+class PACKET_CS_ATTACK2 : public BasePacketData
+{
+public:
+	void Serialize(MemoryStream* outStream) override;
+
+	char direction;
+	short x;
+	short y;
+};
+
+class PACKET_SC_ATTACK2 : public BasePacketData
+{
+public:
+	void Deserialize(Packet* packet) override;
+
+	int id;
+	char direction;
+	short x;
+	short y;
+};
+
+class PACKET_CS_ATTACK3 : public BasePacketData
+{
+public:
+	void Serialize(MemoryStream* outStream) override;
+
+	char direction;
+	short x;
+	short y;
+};
+
+class PACKET_SC_ATTACK3 : public BasePacketData
 {
 public:
 	void Deserialize(Packet* packet) override;

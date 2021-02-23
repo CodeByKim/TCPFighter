@@ -32,6 +32,8 @@ private:
 	void SC_MOVE_START(Packet* packet);
 	void SC_MOVE_STOP(Packet* packet);
 	void SC_ATTACK1(Packet* packet);
+	void SC_ATTACK2(Packet* packet);
+	void SC_ATTACK3(Packet* packet);
 	void SC_DAMAGE(Packet* packet);
 
 	std::unique_ptr<Sprite> mBackgroundSprite;
