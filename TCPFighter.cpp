@@ -215,4 +215,12 @@ void TCPFighter::SC_MOVE_STOP(Packet* packet)
 {
     PACKET_SC_MOVE_STOP data;
     data.Deserialize(packet);
+
+    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    {
+        Util::GetInstance().PrintError(L"not found remote player");
+        return;
+    }
+
+    mOtherPlayers[data.id]->RemoteMoveStop(data.direction, data.x, data.y);
 }

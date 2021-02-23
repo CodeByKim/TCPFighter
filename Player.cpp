@@ -84,11 +84,18 @@ void Player::Attack(int attackType)
 
 void Player::RemoteMoveStart(char dir, int x, int y)
 {
-	mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+	/*mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
 	mIsMove = true;
 
 	mPosition.x = x;
+	mPosition.y = y;*/
+
+	mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+	mPosition.x = x;
 	mPosition.y = y;
+	MovePlayer(dir);
+
+	mCurrentState = ePlayerState::Move;
 }
 
 void Player::RemoteMoveStop(char dir, int x, int y)
@@ -98,6 +105,8 @@ void Player::RemoteMoveStop(char dir, int x, int y)
 
 	mPosition.x = x;
 	mPosition.y = y;
+
+	mCurrentState = ePlayerState::Idle;
 }
 
 void Player::OnFrameUpdate()
@@ -134,7 +143,13 @@ void Player::OnFrameUpdate()
 				{
 					MoveStop();
 				}				
-			}			
+			}		
+
+			if (mIsRemote)
+			{
+				Util::GetInstance().PrintLog(L"Remote Move");
+				MovePlayer(mCurrentMoveDir);
+			}
 		}
 		break;
 
