@@ -90,7 +90,7 @@ void Player::RemoteMoveStart(char dir, int x, int y)
 	mPosition.x = x;
 	mPosition.y = y;*/
 
-	mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+	//mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
 	mPosition.x = x;
 	mPosition.y = y;
 	MovePlayer(dir);
@@ -100,7 +100,7 @@ void Player::RemoteMoveStart(char dir, int x, int y)
 
 void Player::RemoteMoveStop(char dir, int x, int y)
 {
-	mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+	//mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
 	mIsMove = false;
 
 	mPosition.x = x;
