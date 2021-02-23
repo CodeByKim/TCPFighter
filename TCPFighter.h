@@ -35,10 +35,13 @@ private:
 	void SC_ATTACK2(Packet* packet);
 	void SC_ATTACK3(Packet* packet);
 	void SC_DAMAGE(Packet* packet);
+	void SC_DELETE_CHARACTER(Packet* packet);
 
 	std::unique_ptr<Sprite> mBackgroundSprite;
 	RenderComponent* mRender;
 
 	std::shared_ptr<Player> mMyPlayer;
 	std::unordered_map<int, std::shared_ptr<Player>> mOtherPlayers;
+
+	bool mIsGameOver;
 };

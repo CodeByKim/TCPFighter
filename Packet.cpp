@@ -122,3 +122,8 @@ void PACKET_SC_DAMAGE::Deserialize(Packet* packet)
 	packet->stream->ReadInt32(&hitID);
 	packet->stream->ReadInt8((INT8*)&damage);
 }
+
+void PACKET_SC_DELETE_CHARACTER::Deserialize(Packet* packet)
+{
+	packet->stream->ReadInt32(&id);	
+}

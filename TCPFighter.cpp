@@ -13,6 +13,7 @@ TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
 	: Game(hInstance, nCmdShow)
     , mBackgroundSprite(nullptr)
     , mMyPlayer(nullptr)
+    , mIsGameOver(false)
 {
     mRender = (RenderComponent*)GetComponent(eComponentType::Render);
 
@@ -82,6 +83,9 @@ void TCPFighter::OnReceive(Packet* packet)
             break;
         case dfPACKET_SC_DAMAGE:
             SC_DAMAGE(packet);
+            break;
+        case dfPACKET_SC_DELETE_CHARACTER:
+            SC_DELETE_CHARACTER(packet);
             break;
     }
 }
@@ -292,4 +296,26 @@ void TCPFighter::SC_DAMAGE(Packet* packet)
     {
         mMyPlayer->Hit(data.damage);
     }    
+}
+
+void TCPFighter::SC_DELETE_CHARACTER(Packet* packet)
+{
+    PACKET_SC_DELETE_CHARACTER data;
+    data.Deserialize(packet);
+
+    if (data.id == mMyPlayer->GetID())
+    {
+        //내가 죽어버렸네...
+        mIsGameOver = true;        
+        return;
+    }
+
+    if (mOtherPlayers.find(data.id) != mOtherPlayers.end())
+    {
+        //삭제처리 mOtherPlayers[data.id]
+        GameObjectComponent* component = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
+        component->DeleteObject(mOtherPlayers[data.id]);
+        
+        mOtherPlayers.erase(mOtherPlayers.find(data.id));
+    }
 }

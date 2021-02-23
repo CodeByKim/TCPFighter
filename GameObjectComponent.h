@@ -13,6 +13,7 @@ public:
 	void Update() override;
 	eComponentType GetType() override;
 	void RegisterObject(std::shared_ptr<GameObject> object);
+	void DeleteObject(std::shared_ptr<GameObject> object);
 
 	std::vector<std::shared_ptr<GameObject>>& GetObjects();
 
