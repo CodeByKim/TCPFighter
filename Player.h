@@ -28,6 +28,7 @@ public:
 	void SetRemote();
 	void MovePlayer(int dir);
 	void Attack(int attackType);
+	void Hit(char damage);
 
 	void RemoteMoveStart(char dir, int x, int y);
 	void RemoteMoveStop(char dir, int x, int y);
@@ -58,4 +59,3 @@ private:
 	int mCurrentMoveDir;		//8πÊ«‚
 	int mPrevMoveDir;
 };
-

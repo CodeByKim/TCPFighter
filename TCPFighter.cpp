@@ -74,6 +74,9 @@ void TCPFighter::OnReceive(Packet* packet)
         case dfPACKET_SC_ATTACK1:
             SC_ATTACK1(packet);
             break;
+        case dfPACKET_SC_DAMAGE:
+            SC_DAMAGE(packet);
+            break;
     }
 }
 
@@ -240,4 +243,21 @@ void TCPFighter::SC_ATTACK1(Packet* packet)
     }
 
     mOtherPlayers[data.id]->RemoteAttack1(data.direction, data.x, data.y);
+}
+
+void TCPFighter::SC_DAMAGE(Packet* packet)
+{
+    PACKET_SC_DAMAGE data;
+    data.Deserialize(packet);
+        
+    if (mOtherPlayers.find(data.hitID) != mOtherPlayers.end())
+    {
+        mOtherPlayers[data.hitID]->Hit(data.damage);
+    }    
+    else
+    {
+        mMyPlayer->Hit(data.damage);
+    }
+
+    //mOtherPlayers[data.id]->RemoteAttack1(data.direction, data.x, data.y);
 }

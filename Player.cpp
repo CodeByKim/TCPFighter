@@ -76,6 +76,17 @@ void Player::MovePlayer(int dir)
 	mCurrentMoveDir = dir;
 }
 
+void Player::Hit(char damage)
+{
+	Util::GetInstance().PrintLog(L"Hit...");
+	mHp = damage;
+
+	if (mHp <= 0)
+	{
+		Util::GetInstance().PrintLog(L"Im Die...");
+	}
+}
+
 int attack;		//ÀÌ°Ô ¹¹Áö.......
 void Player::Attack(int attackType)
 {
@@ -106,13 +117,8 @@ void Player::RemoteAttack1(char dir, int x, int y)
 	else if (dir == dfPACKET_MOVE_DIR_RR)
 	{
 		mCurrentDir = ePlayerDirection::Right;
-	}
-	//mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+	}	
 	
-	wchar_t str[256];
-	wsprintf(str, L"DIR : %d\n", dir);
-	OutputDebugString(str);
-
 	Attack(dfPACKET_CS_ATTACK1);
 	mCurrentState = ePlayerState::Attack;
 }
