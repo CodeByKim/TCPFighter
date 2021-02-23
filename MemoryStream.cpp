@@ -1,5 +1,11 @@
 #include "MemoryStream.h"
 
+MemoryStream::MemoryStream()
+{
+	mBuffer = new char[1024];	
+	mOffset = 0;
+}
+
 MemoryStream::MemoryStream(char* buffer, int length)
 {
 	mBuffer = new char[length];

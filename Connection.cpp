@@ -53,7 +53,13 @@ void Connection::SendPacket(std::shared_ptr<Packet> packet)
 	//sendQueue에 넣는작업 필요...
 	//근데 일단 그냥 되는지 테스트도 해보자.
 	//mSocket.Send(packet->data, packet->header.size + PACKET_HEADER_SIZE);
-	mSocket.Send(packet->stream->GetBuffer(), packet->header.size + PACKET_HEADER_SIZE);
+
+	char buffer[1024];
+	CopyMemory(buffer, &packet->header, PACKET_HEADER_SIZE);
+	CopyMemory(buffer+ PACKET_HEADER_SIZE, packet->stream->GetBuffer(), packet->stream->GetOffset());
+	mSocket.Send(buffer, packet->header.size + PACKET_HEADER_SIZE);
+
+	//mSocket.Send(packet->stream->GetBuffer(), packet->header.size + PACKET_HEADER_SIZE);
 }
 
 bool Connection::GetPacket(std::queue<std::shared_ptr<Packet>>* packetQueue)

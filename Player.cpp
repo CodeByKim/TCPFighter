@@ -5,8 +5,9 @@
 #include "Resources.h"
 #include "Graphics.h"
 #include "Packet.h"
+#include "TCPFighter.h"
 
-Player::Player(int id, Position2D position, char dir, int hp)
+Player::Player(int id, Position2D position, char dir, int hp, TCPFighter& game)
 	: GameObject(position, id)
 	, mAnimation(nullptr)
 	, mCurrentDir(dir == dfPACKET_MOVE_DIR_LL ? ePlayerDirection::Left : ePlayerDirection::Right)
@@ -15,6 +16,7 @@ Player::Player(int id, Position2D position, char dir, int hp)
 	, mIsMove(false)
 	, mCurrentMoveDir(dir)
 	, mPrevMoveDir(dir)
+	, mGame(game)
 {	
 	InitializeAnimation();
 }
@@ -83,6 +85,19 @@ void Player::OnFrameUpdate()
 			if (mIsMove)
 			{
 				Util::GetInstance().PrintLog(L"Send Move Packet!!");
+
+				PACKET_CS_MOVE_START data;
+				data.direction = mCurrentMoveDir;
+				data.x = mPosition.x;
+				data.y = mPosition.y;
+
+				MemoryStream* stream = new MemoryStream();
+				data.Serialize(stream);
+				std::shared_ptr<Packet> packet = std::make_shared<Packet>();
+				packet->SetMemoryStream(stream);
+				packet->SetHeader(dfPACKET_CS_MOVE_START);
+				mGame.SendPacket(packet);
+
 				mCurrentState = ePlayerState::Move;
 			}
 		}
@@ -100,6 +115,18 @@ void Player::OnFrameUpdate()
 			if (!mIsMove)
 			{
 				Util::GetInstance().PrintLog(L"Send Stop Packet!!");
+
+				PACKET_CS_MOVE_STOP data;
+				data.direction = mCurrentMoveDir;
+				data.x = mPosition.x;
+				data.y = mPosition.y;
+
+				MemoryStream* stream = new MemoryStream();
+				data.Serialize(stream);
+				std::shared_ptr<Packet> packet = std::make_shared<Packet>();
+				packet->SetMemoryStream(stream);
+				packet->SetHeader(dfPACKET_CS_MOVE_STOP);
+				mGame.SendPacket(packet);
 				mCurrentState = ePlayerState::Idle;				
 			}			
 		}

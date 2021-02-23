@@ -38,6 +38,11 @@ TCPFighter::~TCPFighter()
     
 }
 
+void TCPFighter::SendPacket(std::shared_ptr<Packet> packet)
+{
+    NetworkClient::SendPacket(packet);
+}
+
 void TCPFighter::FrameUpdate()
 {
     mRender->DrawSprite(mBackgroundSprite.get(), Position2D{ 0,0 });
@@ -148,7 +153,12 @@ void TCPFighter::SC_CREATE_MY_CHARACTER(Packet* packet)
     Util::GetInstance().PrintLog(str);
 
     GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
-    mMyPlayer = std::make_shared<Player>(data.id, Position2D{ data.x, data.y }, data.direction, data.hp);
+    mMyPlayer = std::make_shared<Player>(
+        data.id, 
+        Position2D{ data.x, data.y }, 
+        data.direction, 
+        data.hp, 
+        *this);
 
     objectComponent->RegisterObject(mMyPlayer);
 }

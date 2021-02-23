@@ -17,7 +17,14 @@ public:
 	Packet();
 	~Packet();
 
+	void SetMemoryStream(MemoryStream* stream);
 	void SetMemoryStream(char* data, int size);
+	void SetHeader(BYTE protocol)
+	{
+		header.code = 0x89;
+		header.size = stream->GetOffset();
+		header.protocol = protocol;
+	}
 	PacketHeader header;
 	MemoryStream* stream;
 	//char* data;
@@ -26,16 +33,16 @@ public:
 class BasePacketData
 {
 public:	
-	virtual void Serialize(Packet* outPacket) {}
+	virtual void Serialize(MemoryStream* outStream) {}
 	virtual void Deserialize(Packet* packet) {}
-	virtual int GetCalcSize() = 0;
+	//virtual int GetCalcSize() = 0;
 };
 
 class PACKET_SC_CREATE_MY_CHARACTER : public BasePacketData
 {
 public:	
 	void Deserialize(Packet* packet) override;
-	int GetCalcSize() override;
+	//int GetCalcSize() override;
 	
 	int id;
 	char direction;
@@ -48,7 +55,7 @@ class PACKET_SC_CREATE_OTHER_CHARACTER : public BasePacketData
 {
 public:	
 	void Deserialize(Packet* packet) override;
-	int GetCalcSize() override;
+	//int GetCalcSize() override;
 
 	int id;
 	char direction;
@@ -90,8 +97,8 @@ public:
 class PACKET_CS_MOVE_START : public BasePacketData
 {
 public:
-	void Serialize(Packet* outPacket) override;
-
+	void Serialize(MemoryStream* outStream) override;
+	//int GetCalcSize() override;
 	char direction;
 	short x;
 	short y;
@@ -100,8 +107,8 @@ public:
 class PACKET_CS_MOVE_STOP : public BasePacketData
 {
 public:
-	void Serialize(Packet* outPacket) override;
-
+	void Serialize(MemoryStream* outStream) override;
+	//int GetCalcSize() override;
 	char direction;
 	short x;
 	short y;

@@ -13,6 +13,8 @@ public:
 	TCPFighter(HINSTANCE hInstance, int nCmdShow);
 	~TCPFighter();
 
+	void SendPacket(std::shared_ptr<Packet> packet);
+
 protected:
 	void FrameUpdate() override;
 	

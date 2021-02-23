@@ -4,6 +4,7 @@
 class MemoryStream
 {
 public:
+	MemoryStream();
 	MemoryStream(char* buffer, int length);
 	~MemoryStream();
 

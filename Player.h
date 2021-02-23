@@ -4,6 +4,7 @@
 
 class Graphics;
 class SpriteAnimation;
+class TCPFighter;
 
 enum class ePlayerDirection
 {
@@ -21,7 +22,7 @@ enum class ePlayerState
 class Player : public GameObject
 {
 public:
-	Player(int id, Position2D position, char dir, int hp);
+	Player(int id, Position2D position, char dir, int hp, TCPFighter& game);
 	~Player();
 
 	void MovePlayer(int dir);
@@ -34,6 +35,7 @@ private:
 	void InitializeAnimation();
 	void PlayAnimation();
 
+	TCPFighter& mGame;
 	ePlayerDirection mCurrentDir;
 	ePlayerState mCurrentState;
 	std::unique_ptr<SpriteAnimation> mAnimation;
