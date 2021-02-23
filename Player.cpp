@@ -98,7 +98,20 @@ void Player::RemoteAttack1(char dir, int x, int y)
 {
 	mPosition.x = x;
 	mPosition.y = y;
-	mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+
+	if (dir == dfPACKET_MOVE_DIR_LL)
+	{
+		mCurrentDir = ePlayerDirection::Left;
+	}
+	else if (dir == dfPACKET_MOVE_DIR_RR)
+	{
+		mCurrentDir = ePlayerDirection::Right;
+	}
+	//mCurrentDir = (dir == dfPACKET_MOVE_DIR_LL) ? ePlayerDirection::Left : ePlayerDirection::Right;
+	
+	wchar_t str[256];
+	wsprintf(str, L"DIR : %d\n", dir);
+	OutputDebugString(str);
 
 	Attack(dfPACKET_CS_ATTACK1);
 	mCurrentState = ePlayerState::Attack;
