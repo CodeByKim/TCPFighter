@@ -15,6 +15,7 @@ public:
 	bool IsEmpty();
 	int GetRemainQueueSize();
 	int GetUseSize();
+	char* GetBufferFront();
 	char* GetBufferRear();
 	int GetDirectEnqueueSize();
 	int GetDirectDequeueSize();

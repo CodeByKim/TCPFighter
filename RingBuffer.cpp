@@ -152,6 +152,11 @@ int RingBuffer::GetUseSize()
 	return mSize;
 }
 
+char* RingBuffer::GetBufferFront()
+{
+	return mBufferFront;
+}
+
 char* RingBuffer::GetBufferRear()
 {
 	return mBufferRear;
@@ -159,11 +164,11 @@ char* RingBuffer::GetBufferRear()
 
 int RingBuffer::GetDirectEnqueueSize()
 {
-	//한번에 쓸 수 있는 사이즈 (Enqueue 로직에서 가져옴)	
-	return mBufferEnd - mBufferFront - 1;
+	//한번에 쓸 수 있는 사이즈 (Enqueue 로직에서 가져옴)		
+	return mBufferEnd - mBufferRear - 1;
 }
 
 int RingBuffer::GetDirectDequeueSize()
-{
-	return -1;
+{	
+	return mBufferRear - mBufferFront;
 }

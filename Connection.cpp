@@ -73,37 +73,18 @@ void Connection::SendPacket(std::shared_ptr<Packet> packet)
 		{
 			break;
 		}
+						
+		int sendByte = mSocket.Send(mSendBuffer.GetBufferFront(), mSendBuffer.GetDirectDequeueSize());
+		mSendBuffer.MoveFront(sendByte);
 		
-		char buffer[1024];
-		int useSize = mSendBuffer.GetUseSize();
-
-		if (mSendBuffer.Peek(buffer, useSize))
+		if (sendByte == SOCKET_ERROR)
 		{
-			int sendByte = mSocket.Send(buffer, useSize);
-			if (sendByte == SOCKET_ERROR)
+			if (WSAGetLastError() == WSAEWOULDBLOCK)
 			{
-				if (WSAGetLastError() == WSAEWOULDBLOCK)
-				{
-					//어차피 지금 송신큐 꽉차서 못보냄... 나중에 전송해야함
-					//일단은 지금은.. 걍 뺑뺑이 돌리자.
-					continue;
-				}
+				//어차피 지금 송신큐 꽉차서 못보냄... 나중에 전송해야함
+				//일단은 지금은.. 걍 뺑뺑이 돌리자.
+				continue;
 			}
-
-			if (useSize - sendByte > 0)
-			{
-				int remainByte = useSize - sendByte;
-				mSendBuffer.MoveFront(sendByte);
-				mSendBuffer.Enqueue(buffer + sendByte, remainByte);
-			}
-			else
-			{
-				mSendBuffer.MoveFront(useSize);
-			}			
-		}		
-		else
-		{
-			//에러인건데...
 		}
 	}
 
