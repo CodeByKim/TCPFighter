@@ -13,6 +13,7 @@ public:
 	void MoveFront(int size);
 	bool IsEmpty();
 	int GetRemainQueueSize();
+	int GetUseSize();
 
 private:
 	char* mBuffer;

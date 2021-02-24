@@ -49,17 +49,71 @@ int Connection::Receive()
 }
 
 void Connection::SendPacket(std::shared_ptr<Packet> packet)
-{	
-	//sendQueue에 넣는작업 필요...
-	//근데 일단 그냥 되는지 테스트도 해보자.
-	//mSocket.Send(packet->data, packet->header.size + PACKET_HEADER_SIZE);
+{		
+	if (!mSendBuffer.Enqueue((char*)&packet->header, PACKET_HEADER_SIZE))
+	{
+		//sendQueue에 데이터를 못넣었다고?
+		//바로 디스커넥트
+		mSocket.Close();
+	}
+	
+	//sendQueue에 페이로드 삽입
+	if (!mSendBuffer.Enqueue(packet->stream->GetBuffer(), packet->header.size))
+	{
+		//sendQueue에 데이터를 못넣었다고?
+		//일단 헤더 넣은거 뺴버려야겠네
+		
+		mSendBuffer.MoveFront(PACKET_HEADER_SIZE);
+		mSocket.Close();
+	}
 
-	char buffer[1024];
+	//sendQueue에 있는 모든 데이터 전송해야 함
+	while (true)
+	{
+		//비어있다면 전부 다 보낸거니까 탈출
+		if (mSendBuffer.IsEmpty())
+		{
+			break;
+		}
+		
+		char buffer[1024];
+		int useSize = mSendBuffer.GetUseSize();
+
+		if (mSendBuffer.Peek(buffer, useSize))
+		{
+			int sendByte = mSocket.Send(buffer, useSize);
+			if (sendByte == SOCKET_ERROR)
+			{
+				if (WSAGetLastError() == WSAEWOULDBLOCK)
+				{
+					//어차피 지금 송신큐 꽉차서 못보냄... 나중에 전송해야함
+					//일단은 지금은.. 걍 뺑뺑이 돌리자.
+					continue;
+				}
+			}
+
+			if (useSize - sendByte > 0)
+			{
+				int remainByte = useSize - sendByte;
+				mSendBuffer.MoveFront(sendByte);
+				mSendBuffer.Enqueue(buffer + sendByte, remainByte);
+			}
+			else
+			{
+				mSendBuffer.MoveFront(useSize);
+			}			
+		}		
+		else
+		{
+			//에러인건데...
+		}
+	}
+
+	//이전 잘 작동했던 코드
+	/*char buffer[1024];
 	CopyMemory(buffer, &packet->header, PACKET_HEADER_SIZE);
 	CopyMemory(buffer+ PACKET_HEADER_SIZE, packet->stream->GetBuffer(), packet->stream->GetOffset());
-	mSocket.Send(buffer, packet->header.size + PACKET_HEADER_SIZE);
-
-	//mSocket.Send(packet->stream->GetBuffer(), packet->header.size + PACKET_HEADER_SIZE);
+	mSocket.Send(buffer, packet->header.size + PACKET_HEADER_SIZE);*/
 }
 
 bool Connection::GetPacket(std::queue<std::shared_ptr<Packet>>* packetQueue)

@@ -128,3 +128,8 @@ int RingBuffer::GetRemainQueueSize()
 {
 	return mCapacity - 1 - mSize;
 }
+
+int RingBuffer::GetUseSize()
+{
+	return mSize;
+}
