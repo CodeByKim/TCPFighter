@@ -11,9 +11,13 @@ public:
 	bool Dequeue(char* outData, int size);
 	bool Peek(char* outData, int size);
 	void MoveFront(int size);
+	void MoveRear(int size);
 	bool IsEmpty();
 	int GetRemainQueueSize();
 	int GetUseSize();
+	char* GetBufferRear();
+	int GetDirectEnqueueSize();
+	int GetDirectDequeueSize();
 
 private:
 	char* mBuffer;

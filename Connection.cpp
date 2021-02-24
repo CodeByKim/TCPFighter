@@ -40,11 +40,9 @@ bool Connection::Connect(std::string_view ip, unsigned short port)
 }
 
 int Connection::Receive()
-{
-	char buffer[BUFFER_SIZE];
-	int recvSize = mSocket.Receive(buffer, BUFFER_SIZE);
-	mRecvBuffer.Enqueue(buffer, recvSize);
-
+{	
+	int recvSize = mSocket.Receive(mRecvBuffer.GetBufferRear(), mRecvBuffer.GetDirectEnqueueSize());
+	mRecvBuffer.MoveRear(recvSize);	
 	return recvSize;
 }
 
@@ -109,7 +107,7 @@ void Connection::SendPacket(std::shared_ptr<Packet> packet)
 		}
 	}
 
-	//이전 잘 작동했던 코드
+	//예전 코드
 	/*char buffer[1024];
 	CopyMemory(buffer, &packet->header, PACKET_HEADER_SIZE);
 	CopyMemory(buffer+ PACKET_HEADER_SIZE, packet->stream->GetBuffer(), packet->stream->GetOffset());

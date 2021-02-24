@@ -119,6 +119,24 @@ void RingBuffer::MoveFront(int size)
 	mSize -= size;
 }
 
+void RingBuffer::MoveRear(int size)
+{	
+	// 넣으려는 사이즈가 버퍼의 남은 공간보다 작을 때
+	// 이때는 데이터가 한번에 들어간다.
+	if (size <= (mBufferEnd - mBufferRear - 1))
+	{		
+		mBufferRear += size;
+	}
+	else
+	{
+		int tempSize = mBufferEnd - mBufferRear;		
+		mBufferRear = mBuffer;		
+		mBufferRear += (size - tempSize);
+	}
+
+	mSize += size;
+}
+
 bool RingBuffer::IsEmpty()
 {
 	return mBufferFront == mBufferRear;
@@ -132,4 +150,20 @@ int RingBuffer::GetRemainQueueSize()
 int RingBuffer::GetUseSize()
 {
 	return mSize;
+}
+
+char* RingBuffer::GetBufferRear()
+{
+	return mBufferRear;
+}
+
+int RingBuffer::GetDirectEnqueueSize()
+{
+	//한번에 쓸 수 있는 사이즈 (Enqueue 로직에서 가져옴)	
+	return mBufferEnd - mBufferFront - 1;
+}
+
+int RingBuffer::GetDirectDequeueSize()
+{
+	return -1;
 }

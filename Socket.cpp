@@ -68,7 +68,7 @@ bool Socket::Connect(std::string_view ip, unsigned short port)
 
 int Socket::Receive(char* buffer, int size)
 {
-	return recv(mSocket, buffer, size, 0);		
+	return recv(mSocket, buffer, size, 0);
 }
 
 int Socket::Send(char* buffer, int size)
