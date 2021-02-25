@@ -1,6 +1,15 @@
 #pragma once
 #include "CommonLibrary.h"
 
+#define PACKET_HEADER_SIZE 3
+
+struct PacketHeader
+{
+	BYTE code;
+	BYTE size;
+	BYTE protocol;
+};
+
 class PacketException : public std::exception
 {
 public:
@@ -33,6 +42,28 @@ public:
 	void GetData(char* outData, int size);
 	void Clear();
 	int GetSize();
+	void SetHeader(PacketHeader header)
+	{
+		this->header = header;
+	}
+
+	void SetHeader(int protocol)
+	{
+		header.code = 0x89;
+		header.size = mSize;
+		header.protocol = protocol;
+	}
+
+	void SetPayload(char* buffer, int size)
+	{
+		CopyMemory(mBuffer, buffer, size);
+		mSize = size;
+	}
+
+	char* GetBuffer()
+	{
+		return mBuffer;
+	}
 
 	NetPacket& operator<< (BYTE& data);
 	NetPacket& operator<< (bool& data);
@@ -50,8 +81,10 @@ public:
 	NetPacket& operator>> (float& outData);
 	NetPacket& operator>> (double& outData);
 
+	PacketHeader header;
+
 private:
-	static int constexpr MAX_PACKET_SIZE = 1024; 
+	static int constexpr MAX_PACKET_SIZE = 1024; 	
 	
 	char mBuffer[MAX_PACKET_SIZE];
 	char* mBufferFront;

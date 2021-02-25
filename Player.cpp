@@ -4,7 +4,8 @@
 #include "SpriteAnimation.h"
 #include "Resources.h"
 #include "Graphics.h"
-#include "Packet.h"
+//#include "Packet.h"
+#include "NetPacket.h"
 #include "TCPFighter.h"
 
 Player::Player(int id, Position2D position, char dir, int hp, TCPFighter& game)
@@ -315,7 +316,7 @@ void Player::PlayAnimation()
 
 void Player::MoveStart()
 {
-	PACKET_CS_MOVE_START data;
+	/*PACKET_CS_MOVE_START data;
 	data.direction = mCurrentMoveDir;
 	data.x = mPosition.x;
 	data.y = mPosition.y;
@@ -325,6 +326,15 @@ void Player::MoveStart()
 	std::shared_ptr<Packet> packet = std::make_shared<Packet>();
 	packet->SetMemoryStream(stream);
 	packet->SetHeader(dfPACKET_CS_MOVE_START);
+	mGame.SendPacket(packet);*/
+
+	char direction = mCurrentMoveDir;
+	short x = mPosition.x;
+	short y = mPosition.y;
+
+	std::shared_ptr<NetPacket> packet = std::make_shared<NetPacket>();
+	*packet << direction << x << y;
+	packet->SetHeader(dfPACKET_CS_MOVE_START);
 	mGame.SendPacket(packet);
 
 	mCurrentState = ePlayerState::Move;
@@ -332,7 +342,7 @@ void Player::MoveStart()
 
 void Player::MoveStop()
 {
-	PACKET_CS_MOVE_STOP data;
+	/*PACKET_CS_MOVE_STOP data;
 	data.direction = mCurrentMoveDir;
 	data.x = mPosition.x;
 	data.y = mPosition.y;
@@ -341,7 +351,15 @@ void Player::MoveStop()
 	data.Serialize(stream);
 	std::shared_ptr<Packet> packet = std::make_shared<Packet>();
 	packet->SetMemoryStream(stream);
-	packet->SetHeader(dfPACKET_CS_MOVE_STOP);
+	packet->SetHeader(dfPACKET_CS_MOVE_STOP);*/
+
+	char direction = mCurrentMoveDir;
+	short x = mPosition.x;
+	short y = mPosition.y;
+
+	std::shared_ptr<NetPacket> packet = std::make_shared<NetPacket>();
+	*packet << direction << x << y;
+	packet->SetHeader(dfPACKET_CS_MOVE_STOP);	
 	mGame.SendPacket(packet);
 
 	mCurrentState = ePlayerState::Idle;
@@ -349,7 +367,7 @@ void Player::MoveStop()
 
 void Player::AttackStart(int attackType)
 {
-	PACKET_CS_ATTACK1 data;
+	/*PACKET_CS_ATTACK1 data;
 	data.direction = mCurrentMoveDir;
 	data.x = mPosition.x;
 	data.y = mPosition.y;
@@ -358,6 +376,15 @@ void Player::AttackStart(int attackType)
 	data.Serialize(stream);
 	std::shared_ptr<Packet> packet = std::make_shared<Packet>();
 	packet->SetMemoryStream(stream);
+	packet->SetHeader(attackType);
+	mGame.SendPacket(packet);*/
+
+	char direction = mCurrentMoveDir;
+	short x = mPosition.x;
+	short y = mPosition.y;
+
+	std::shared_ptr<NetPacket> packet = std::make_shared<NetPacket>();
+	*packet << direction << x << y;
 	packet->SetHeader(attackType);
 	mGame.SendPacket(packet);
 

@@ -7,7 +7,8 @@
 #include "GameObjectComponent.h"
 #include "RenderComponent.h"
 #include "Player.h"
-#include "Packet.h"
+//#include "Packet.h"
+#include "NetPacket.h"
 
 TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
 	: Game(hInstance, nCmdShow)
@@ -39,7 +40,7 @@ TCPFighter::~TCPFighter()
     
 }
 
-void TCPFighter::SendPacket(std::shared_ptr<Packet> packet)
+void TCPFighter::SendPacket(std::shared_ptr<NetPacket> packet)
 {
     NetworkClient::SendPacket(packet);
 }
@@ -56,7 +57,7 @@ void TCPFighter::OnConnect()
     Util::GetInstance().PrintLog(L"On Connect...");
 }
 
-void TCPFighter::OnReceive(Packet* packet)
+void TCPFighter::OnReceive(NetPacket* packet)
 {
     switch (packet->header.protocol)
     {
@@ -159,163 +160,167 @@ void TCPFighter::CreateGameObject()
     mBackgroundSprite.reset(mapSprite);    
 }
 
-void TCPFighter::SC_CREATE_MY_CHARACTER(Packet* packet)
+void TCPFighter::SC_CREATE_MY_CHARACTER(NetPacket* packet)
 {
-    PACKET_SC_CREATE_MY_CHARACTER data;
-    data.Deserialize(packet);
-
-    wchar_t str[256];
-    wsprintf(str, L"%s : %d, %d, %d, %d, %d",
-        L"dfPACKET_SC_CREATE_MY_CHARACTER",
-        data.id,
-        data.direction,
-        data.x,
-        data.y,
-        data.hp);
-    Util::GetInstance().PrintLog(str);
+    int id;
+    char direction;
+    short x;
+    short y;
+    char hp;
+    *packet >> id >> direction >> x >> y >> hp;
 
     GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
     mMyPlayer = std::make_shared<Player>(
-        data.id, 
-        Position2D{ data.x, data.y }, 
-        data.direction, 
-        data.hp, 
+        id, 
+        Position2D{ x, y }, 
+        direction, 
+        hp, 
         *this);
 
     objectComponent->RegisterObject(mMyPlayer);
 }
 
-void TCPFighter::SC_CREATE_OTHER_CHARACTER(Packet* packet)
+void TCPFighter::SC_CREATE_OTHER_CHARACTER(NetPacket* packet)
 {
-    PACKET_SC_CREATE_OTHER_CHARACTER data;
-    data.Deserialize(packet);
-
-    wchar_t str[256];
-    wsprintf(str, L"%s : %d, %d, %d, %d, %d",
-        L"dfPACKET_SC_CREATE_OTHER_CHARACTER",
-        data.id,
-        data.direction,
-        data.x,
-        data.y,
-        data.hp);
-    Util::GetInstance().PrintLog(str);
+    int id;
+    char direction;
+    short x;
+    short y;
+    char hp;
+    *packet >> id >> direction >> x >> y >> hp;
 
     GameObjectComponent* objectComponent = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
     auto otherPlayer = std::make_shared<Player>(
-        data.id,
-        Position2D{ data.x, data.y },
-        data.direction,
-        data.hp,
+        id,
+        Position2D{ x, y },
+        direction,
+        hp,
         *this);
 
     otherPlayer->SetRemote();
     objectComponent->RegisterObject(otherPlayer);
-    mOtherPlayers.insert(std::make_pair(data.id, otherPlayer));
+    mOtherPlayers.insert(std::make_pair(id, otherPlayer));
 }
 
-void TCPFighter::SC_MOVE_START(Packet* packet)
+void TCPFighter::SC_MOVE_START(NetPacket* packet)
 {
-    PACKET_SC_MOVE_START data;
-    data.Deserialize(packet);
+    int id;
+    char direction;
+    short x;
+    short y;
+    *packet >> id >> direction >> x >> y;
 
-    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    if (mOtherPlayers.find(id) == mOtherPlayers.end())
     {
         Util::GetInstance().PrintError(L"not found remote player");
         return;
     }
 
-    mOtherPlayers[data.id]->RemoteMoveStart(data.direction, data.x, data.y);
+    mOtherPlayers[id]->RemoteMoveStart(direction, x, y);
 }
 
-void TCPFighter::SC_MOVE_STOP(Packet* packet)
+void TCPFighter::SC_MOVE_STOP(NetPacket* packet)
 {
-    PACKET_SC_MOVE_STOP data;
-    data.Deserialize(packet);
+    int id;
+    char direction;
+    short x;
+    short y;
+    *packet >> id >> direction >> x >> y;
 
-    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    if (mOtherPlayers.find(id) == mOtherPlayers.end())
     {
         Util::GetInstance().PrintError(L"not found remote player");
         return;
     }
 
-    mOtherPlayers[data.id]->RemoteMoveStop(data.direction, data.x, data.y);
+    mOtherPlayers[id]->RemoteMoveStop(direction, x, y);
 }
 
-void TCPFighter::SC_ATTACK1(Packet* packet)
+void TCPFighter::SC_ATTACK1(NetPacket* packet)
 {
-    PACKET_SC_ATTACK1 data;
-    data.Deserialize(packet);
+    int id;
+    char direction;
+    short x;
+    short y;
+    *packet >> id >> direction >> x >> y;
 
-    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    if (mOtherPlayers.find(id) == mOtherPlayers.end())
     {
         Util::GetInstance().PrintError(L"not found remote player");
         return;
     }
 
-    mOtherPlayers[data.id]->RemoteAttack1(data.direction, data.x, data.y);
+    mOtherPlayers[id]->RemoteAttack1(direction, x, y);
 }
 
-void TCPFighter::SC_ATTACK2(Packet* packet)
+void TCPFighter::SC_ATTACK2(NetPacket* packet)
 {
-    PACKET_SC_ATTACK2 data;
-    data.Deserialize(packet);
+    int id;
+    char direction;
+    short x;
+    short y;
+    *packet >> id >> direction >> x >> y;
 
-    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    if (mOtherPlayers.find(id) == mOtherPlayers.end())
     {
         Util::GetInstance().PrintError(L"not found remote player");
         return;
     }
 
-    mOtherPlayers[data.id]->RemoteAttack2(data.direction, data.x, data.y);
+    mOtherPlayers[id]->RemoteAttack2(direction, x, y);
 }
 
-void TCPFighter::SC_ATTACK3(Packet* packet)
+void TCPFighter::SC_ATTACK3(NetPacket* packet)
 {
-    PACKET_SC_ATTACK3 data;
-    data.Deserialize(packet);
+    int id;
+    char direction;
+    short x;
+    short y;
+    *packet >> id >> direction >> x >> y;
 
-    if (mOtherPlayers.find(data.id) == mOtherPlayers.end())
+    if (mOtherPlayers.find(id) == mOtherPlayers.end())
     {
         Util::GetInstance().PrintError(L"not found remote player");
         return;
     }
 
-    mOtherPlayers[data.id]->RemoteAttack3(data.direction, data.x, data.y);
+    mOtherPlayers[id]->RemoteAttack3(direction, x, y);
 }
 
-void TCPFighter::SC_DAMAGE(Packet* packet)
+void TCPFighter::SC_DAMAGE(NetPacket* packet)
 {
-    PACKET_SC_DAMAGE data;
-    data.Deserialize(packet);
+    int attackID;
+    int hitID;
+    char damage;    
+    *packet >> attackID >> hitID >> damage;
         
-    if (mOtherPlayers.find(data.hitID) != mOtherPlayers.end())
+    if (mOtherPlayers.find(hitID) != mOtherPlayers.end())
     {
-        mOtherPlayers[data.hitID]->Hit(data.damage);
+        mOtherPlayers[hitID]->Hit(damage);
     }    
     else
     {
-        mMyPlayer->Hit(data.damage);
+        mMyPlayer->Hit(damage);
     }    
 }
 
-void TCPFighter::SC_DELETE_CHARACTER(Packet* packet)
+void TCPFighter::SC_DELETE_CHARACTER(NetPacket* packet)
 {
-    PACKET_SC_DELETE_CHARACTER data;
-    data.Deserialize(packet);
+    int id;
+    *packet >> id;
 
-    if (data.id == mMyPlayer->GetID())
+    if (id == mMyPlayer->GetID())
     {
         //내가 죽어버렸네...
         mIsGameOver = true;        
         return;
     }
 
-    if (mOtherPlayers.find(data.id) != mOtherPlayers.end())
-    {
-        //삭제처리 mOtherPlayers[data.id]
+    if (mOtherPlayers.find(id) != mOtherPlayers.end())
+    {        
         GameObjectComponent* component = (GameObjectComponent*)GetComponent(eComponentType::GameObject);
-        component->DeleteObject(mOtherPlayers[data.id]);
+        component->DeleteObject(mOtherPlayers[id]);
         
-        mOtherPlayers.erase(mOtherPlayers.find(data.id));
+        mOtherPlayers.erase(mOtherPlayers.find(id));
     }
 }

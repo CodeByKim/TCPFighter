@@ -3,7 +3,7 @@
 #include "Window.h"
 #include "Connection.h"
 
-class Packet;
+class NetPacket;
 
 class NetworkClient : public Window
 {
@@ -13,11 +13,11 @@ public:
 
 protected:
 	virtual void OnConnect() = 0;
-	virtual void OnReceive(Packet* packet) = 0;
+	virtual void OnReceive(NetPacket* packet) = 0;
 	virtual void OnDisconnect() = 0;
 
 	bool Connect(std::string_view ip, unsigned short port);
-	void SendPacket(std::shared_ptr<Packet> packet);
+	void SendPacket(std::shared_ptr<NetPacket> packet);
 	void ProcessUserWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;
 
 private:
@@ -25,4 +25,3 @@ private:
 
 	Connection mConnection;
 };
-

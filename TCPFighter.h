@@ -5,7 +5,7 @@
 
 class RenderComponent;
 class Player;
-class Packet;
+class NetPacket;
 
 class TCPFighter : public Game
 {
@@ -13,13 +13,13 @@ public:
 	TCPFighter(HINSTANCE hInstance, int nCmdShow);
 	~TCPFighter();
 
-	void SendPacket(std::shared_ptr<Packet> packet);
+	void SendPacket(std::shared_ptr<NetPacket> packet);
 
 protected:
 	void FrameUpdate() override;
 	
 	void OnConnect() override;
-	void OnReceive(Packet* packet) override;
+	void OnReceive(NetPacket* packet) override;
 	void OnDisconnect() override;
 
 private:
@@ -27,15 +27,15 @@ private:
 	void RegisterInputHandlers();
 	void CreateGameObject();
 
-	void SC_CREATE_MY_CHARACTER(Packet* packet);
-	void SC_CREATE_OTHER_CHARACTER(Packet* packet);
-	void SC_MOVE_START(Packet* packet);
-	void SC_MOVE_STOP(Packet* packet);
-	void SC_ATTACK1(Packet* packet);
-	void SC_ATTACK2(Packet* packet);
-	void SC_ATTACK3(Packet* packet);
-	void SC_DAMAGE(Packet* packet);
-	void SC_DELETE_CHARACTER(Packet* packet);
+	void SC_CREATE_MY_CHARACTER(NetPacket* packet);
+	void SC_CREATE_OTHER_CHARACTER(NetPacket* packet);
+	void SC_MOVE_START(NetPacket* packet);
+	void SC_MOVE_STOP(NetPacket* packet);
+	void SC_ATTACK1(NetPacket* packet);
+	void SC_ATTACK2(NetPacket* packet);
+	void SC_ATTACK3(NetPacket* packet);
+	void SC_DAMAGE(NetPacket* packet);
+	void SC_DELETE_CHARACTER(NetPacket* packet);
 
 	std::unique_ptr<Sprite> mBackgroundSprite;
 	RenderComponent* mRender;

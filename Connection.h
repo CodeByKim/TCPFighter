@@ -3,7 +3,7 @@
 #include "CommonLibrary.h"
 #include "Socket.h"
 
-class Packet;
+class NetPacket;
 
 class Connection
 {
@@ -17,8 +17,8 @@ public:
 
 	bool Connect(std::string_view ip, unsigned short port);
 	int Receive();	
-	void SendPacket(std::shared_ptr<Packet> packet);
-	bool GetPacket(std::queue<std::shared_ptr<Packet>>* packetQueue);
+	void SendPacket(std::shared_ptr<NetPacket> packet);
+	bool GetPacket(std::queue<std::shared_ptr<NetPacket>>* packetQueue);
 
 	SOCKET GetSocketHandle();
 

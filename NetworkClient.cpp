@@ -18,7 +18,7 @@ bool NetworkClient::Connect(std::string_view ip, unsigned short port)
     return mConnection.Connect(ip, port);
 }
 
-void NetworkClient::SendPacket(std::shared_ptr<Packet> packet)
+void NetworkClient::SendPacket(std::shared_ptr<NetPacket> packet)
 {
     mConnection.SendPacket(packet);
 }
@@ -40,7 +40,7 @@ void NetworkClient::ProcessUserWindowMessage(HWND hWnd, UINT message, WPARAM wPa
             int recvSize = mConnection.Receive();
             if (recvSize > 0)
             {
-                std::queue<std::shared_ptr<Packet>> packetQueue;
+                std::queue<std::shared_ptr<NetPacket>> packetQueue;
                 mConnection.GetPacket(&packetQueue);
 
                 while (!packetQueue.empty())
