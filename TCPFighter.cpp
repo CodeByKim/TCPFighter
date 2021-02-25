@@ -7,7 +7,6 @@
 #include "GameObjectComponent.h"
 #include "RenderComponent.h"
 #include "Player.h"
-//#include "Packet.h"
 #include "NetPacket.h"
 
 TCPFighter::TCPFighter(HINSTANCE hInstance, int nCmdShow)
@@ -59,8 +58,10 @@ void TCPFighter::OnConnect()
 
 void TCPFighter::OnReceive(NetPacket* packet)
 {
-    switch (packet->header.protocol)
+    try
     {
+        switch (packet->header.protocol)
+        {
         case dfPACKET_SC_CREATE_MY_CHARACTER:
             SC_CREATE_MY_CHARACTER(packet);
             break;
@@ -88,6 +89,12 @@ void TCPFighter::OnReceive(NetPacket* packet)
         case dfPACKET_SC_DELETE_CHARACTER:
             SC_DELETE_CHARACTER(packet);
             break;
+        }
+    }
+    catch (PacketException exception)
+    {
+        Util::GetInstance().ShowMessageBox(exception.Log());
+        CloseNetwork();
     }
 }
 

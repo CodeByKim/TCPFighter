@@ -19,6 +19,7 @@ protected:
 	bool Connect(std::string_view ip, unsigned short port);
 	void SendPacket(std::shared_ptr<NetPacket> packet);
 	void ProcessUserWindowMessage(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) override;
+	void CloseNetwork();
 
 private:
 	void InitializeNetwork();

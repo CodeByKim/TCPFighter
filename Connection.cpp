@@ -1,5 +1,4 @@
 #include "Connection.h"
-//#include "Packet.h"
 #include "NetPacket.h"
 
 Connection::Connection()
@@ -56,8 +55,7 @@ void Connection::SendPacket(std::shared_ptr<NetPacket> packet)
 		mSocket.Close();
 	}
 	
-	//sendQueue에 페이로드 삽입
-	//if (!mSendBuffer.Enqueue(packet->stream->GetBuffer(), packet->header.size))
+	//sendQueue에 페이로드 삽입	
 	if (!mSendBuffer.Enqueue(packet->GetBuffer(), packet->header.size))
 	{
 		//sendQueue에 데이터를 못넣었다고?
@@ -89,12 +87,6 @@ void Connection::SendPacket(std::shared_ptr<NetPacket> packet)
 			}
 		}
 	}
-
-	//예전 코드
-	/*char buffer[1024];
-	CopyMemory(buffer, &packet->header, PACKET_HEADER_SIZE);
-	CopyMemory(buffer+ PACKET_HEADER_SIZE, packet->stream->GetBuffer(), packet->stream->GetOffset());
-	mSocket.Send(buffer, packet->header.size + PACKET_HEADER_SIZE);*/
 }
 
 bool Connection::GetPacket(std::queue<std::shared_ptr<NetPacket>>* packetQueue)
@@ -115,12 +107,10 @@ bool Connection::GetPacket(std::queue<std::shared_ptr<NetPacket>>* packetQueue)
 
 			mRecvBuffer.MoveFront(PACKET_HEADER_SIZE + header.size);
 
-			std::shared_ptr<NetPacket> packet = std::make_shared<NetPacket>();
-			//packet->header = header;
+			std::shared_ptr<NetPacket> packet = std::make_shared<NetPacket>();			
 			packet->SetHeader(header);
 			packet->SetPayload(buffer + PACKET_HEADER_SIZE, header.size);
-
-			//packet->SetMemoryStream(buffer + PACKET_HEADER_SIZE, header.size);			
+			
 			packetQueue->push(packet);
 		}
 		else

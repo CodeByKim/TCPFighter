@@ -24,7 +24,7 @@ public:
 	~PacketException();
 
 	char const* what() const override;
-	std::string Log();
+	std::wstring Log();
 
 private:
 	ePacketOperationType mType;
@@ -42,28 +42,10 @@ public:
 	void GetData(char* outData, int size);
 	void Clear();
 	int GetSize();
-	void SetHeader(PacketHeader header)
-	{
-		this->header = header;
-	}
-
-	void SetHeader(int protocol)
-	{
-		header.code = 0x89;
-		header.size = mSize;
-		header.protocol = protocol;
-	}
-
-	void SetPayload(char* buffer, int size)
-	{
-		CopyMemory(mBuffer, buffer, size);
-		mSize = size;
-	}
-
-	char* GetBuffer()
-	{
-		return mBuffer;
-	}
+	void SetHeader(PacketHeader header);
+	void SetHeader(int protocol);
+	void SetPayload(char* buffer, int size);
+	char* GetBuffer();
 
 	NetPacket& operator<< (BYTE& data);
 	NetPacket& operator<< (bool& data);

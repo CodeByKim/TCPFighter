@@ -16,9 +16,9 @@ char const* PacketException::what() const
     return "Packet Exception";
 }
 
-std::string PacketException::Log()
+std::wstring PacketException::Log()
 {
-    std::ostringstream os;
+    std::wostringstream os;
     os << "[PacketException] =>"; 
     os << " Type : " << ((mType == ePacketOperationType::GetData) ? "GutData" : "PutData");
     os << ", PacketSize : " << mPacketSize;
@@ -75,6 +75,29 @@ void NetPacket::Clear()
 int NetPacket::GetSize()
 {
     return mSize;
+}
+
+void NetPacket::SetHeader(PacketHeader header)
+{
+    this->header = header;
+}
+
+void NetPacket::SetHeader(int protocol)
+{
+    header.code = 0x89;
+    header.size = mSize;
+    header.protocol = protocol;
+}
+
+void NetPacket::SetPayload(char* buffer, int size)
+{
+    CopyMemory(mBuffer, buffer, size);
+    mSize = size;
+}
+
+char* NetPacket::GetBuffer()
+{
+    return mBuffer;
 }
 
 #pragma region operator>> (Put Data)

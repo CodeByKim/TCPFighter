@@ -86,3 +86,8 @@ void NetworkClient::InitializeNetwork()
         return;
     }
 }
+
+void NetworkClient::CloseNetwork()
+{
+    mConnection.Release();
+}
