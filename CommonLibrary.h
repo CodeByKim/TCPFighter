@@ -15,6 +15,7 @@
 #include <chrono>
 #include <queue>
 #include <filesystem>
+#include <sstream>
 
 #include <WinSock2.h>
 #include <WS2tcpip.h>
