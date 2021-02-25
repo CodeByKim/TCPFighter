@@ -7,7 +7,6 @@
 #include "RenderComponent.h"
 #include "GameObject.h"
 #include "Sprite.h"
-#include "Packet.h"
 
 Game::Game(HINSTANCE hInstance, int nCmdShow)
 	: NetworkClient(hInstance, nCmdShow)    

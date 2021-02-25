@@ -108,12 +108,6 @@
     <ClInclude Include="Socket.h">
       <Filter>헤더 파일\Network</Filter>
     </ClInclude>
-    <ClInclude Include="Packet.h">
-      <Filter>헤더 파일\Network</Filter>
-    </ClInclude>
-    <ClInclude Include="MemoryStream.h">
-      <Filter>헤더 파일\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="PacketDefine.h">
       <Filter>헤더 파일\Network</Filter>
     </ClInclude>
@@ -194,12 +188,6 @@
     </ClCompile>
     <ClCompile Include="Socket.cpp">
       <Filter>소스 파일\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="Packet.cpp">
-      <Filter>소스 파일\Network</Filter>
-    </ClCompile>
-    <ClCompile Include="MemoryStream.cpp">
-      <Filter>소스 파일\Utils</Filter>
     </ClCompile>
     <ClCompile Include="NetPacket.cpp">
       <Filter>소스 파일\Network</Filter>
